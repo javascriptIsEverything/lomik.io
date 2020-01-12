@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.1/qs.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="canvas" width="500" height="500" tabindex="1"></canvas>
+    <!-- <ul id="players"></ul> -->
+    <span id="tmp"> </span>
+    <script>
+        const tmp = document.getElementById('tmp').firstChild;
+    </script>
+    <style>
+        body {
+            margin: 0;
+        }
+        canvas#canvas {
+            outline: 3px solid;
+        }
+        #players {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 200px;
+        }
+    </style>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/health.js" defer></script>
+    <script src="js/tank.js" defer></script>
+    <script src="js/draw.js" defer></script>
+    <script src="js/client.js" defer></script>
+</body>
+</html>
