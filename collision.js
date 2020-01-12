@@ -14,7 +14,7 @@ function RectCircleColliding(circle, rect){
 
 
 function updateScore (obj, cellMaxHealth) {
-    obj.score += Math.ceil(cellMaxHealth/2);
+    obj.score += Math.ceil(cellMaxHealth/2 * 2);
 
     let levels = obj.levelSettings;
     if (obj.score >= obj.prevLevelsTotal + levels[obj.level+1]) {
@@ -94,7 +94,6 @@ module.exports = function (geometry) {
                         return;
                     }
                     else i.lastDamaged = Date.now();
-
                     let vx, vy;
                     if (obj.moveButtons.left === true) {
                         vx = -1;
