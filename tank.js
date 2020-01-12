@@ -1,5 +1,5 @@
 module.exports = class Tank {
-    constructor (x, y, id) {
+    constructor(x, y, id) {
         this.x = x;
         this.y = y;
         this.r = 10;
@@ -32,7 +32,7 @@ module.exports = class Tank {
         };
         this.guns = [{
             x: 0,
-            y: -this.r/2,
+            y: -this.r / 2,
             width: 30,
             height: 8,
             angle: 0
@@ -77,7 +77,7 @@ module.exports = class Tank {
         };
         this.bulletR = 5;
     }
-    moveHandler (obj = this, e) {
+    moveHandler(obj = this, e) {
         if (!obj.moveButtons) return;
 
         let isKeydown;
@@ -104,9 +104,9 @@ module.exports = class Tank {
             default:
                 return;
         }
-        
+
         obj.isMoving = true;
-        
+
         if (!isKeydown) {
             let isAnyKeyPressed;
             for (let i in obj.moveButtons) {
@@ -131,15 +131,15 @@ module.exports = class Tank {
 
         // sock.emit('update', {id: sock.id, props: props});
     }
-    upgrade (obj = this, n) {
+    upgrade(obj = this, n) {
         n--;
         if (obj.upgradedNTimes[n] > 6) return false;
         else if (obj.upgradedNTimes[8] <= 0) return false;
 
         switch (n) {
             case 0:
-                obj.regeneration.delay -= 200; 
-                obj.regeneration.speed += .04; 
+                obj.regeneration.delay -= 200;
+                obj.regeneration.speed += .04;
                 break;
             case 1:
                 obj.maxHealth += 10;
@@ -168,14 +168,14 @@ module.exports = class Tank {
 
         if (obj.upgradedNTimes[n] !== undefined) {
             obj.upgradedNTimes[n]++;
-            obj.upgradedNTimes[8]-=1;
+            obj.upgradedNTimes[8] -= 1;
             return true;
         }
     }
-    drawScoreAndUpdates () {
+    drawScoreAndUpdates() {
         // this.upgradedNTimes[8] = 1;
         // score
-        let nextLvL = this.levelSettings[this.level+1];
+        let nextLvL = this.levelSettings[this.level + 1];
         let earnedNow = this.score - this.prevLevelsTotal;
         let percent = earnedNow * 100 / nextLvL;
 
@@ -184,33 +184,33 @@ module.exports = class Tank {
         let text;
 
         ctx.fillStyle = '#000';
-        ctx.fillRect(cw/2-width/2, ch - 30, width, height);
+        ctx.fillRect(cw / 2 - width / 2, ch - 30, width, height);
         ctx.fillStyle = 'orangered';
-        ctx.fillRect(cw/2-width/2+1, ch - 28, percent * (width - 4) / 100, height-4);
+        ctx.fillRect(cw / 2 - width / 2 + 1, ch - 28, percent * (width - 4) / 100, height - 4);
 
         ctx.fillStyle = '#fff'
         ctx.font = "10px serif";
         text = `Score: ${this.score}`;
-        ctx.fillText(text, cw/2-text.length*2, ch-20.5);
+        ctx.fillText(text, cw / 2 - text.length * 2, ch - 20.5);
 
         width = 130;
 
         ctx.fillStyle = '#000';
-        ctx.fillRect(cw/2-width/2, ch - 45, width, height);
+        ctx.fillRect(cw / 2 - width / 2, ch - 45, width, height);
         ctx.fillStyle = 'dodgerblue';
-        ctx.fillRect(cw/2-width/2+1, ch - 43,
+        ctx.fillRect(cw / 2 - width / 2 + 1, ch - 43,
             (this.level * 100 / this.levelSettings.length) * (width - 4) / 100,
-            height-4);
-        
+            height - 4);
+
         ctx.fillStyle = '#fff'
         ctx.font = "10px serif";
         text = `Level: ${this.level}`;
-        ctx.fillText(text, cw/2-text.length*2, ch-36.5);
+        ctx.fillText(text, cw / 2 - text.length * 2, ch - 36.5);
         // score end
 
         // upgrades
         // if (this.upgradedNTimes[8] <= 0) return;
-            
+
         let x = 20,
             y = ch - 130,
             w = 150,
@@ -218,18 +218,18 @@ module.exports = class Tank {
             u = this.upgradedNTimes;
         ctx.fillStyle = '#000';
         ctx.save();
-        ctx.translate(x+w+3, y+5);
+        ctx.translate(x + w + 3, y + 5);
         ctx.rotate(5.9);
         ctx.font = '20px sans-serif';
         ctx.fillText(`x${u[8]}`, 0, 0);
         ctx.restore();
         for (let i in u) {
-            if (i == u.length-1) break;
-            
+            if (i == u.length - 1) break;
+
             ctx.fillStyle = '#000';
             ctx.fillRect(x, y, w, h);
             // upgrade color
-            switch (i|0) {
+            switch (i | 0) {
                 case 0:
                     ctx.fillStyle = 'rgb(237, 181, 143)';
                     break;
@@ -258,38 +258,47 @@ module.exports = class Tank {
                     ctx.fillStyle = 'white';
                     break;
             }
-            ctx.fillRect(x, y+1, (u[i] * 100 / 7) * (w-2) / 100, h-2)
+            ctx.fillRect(x, y + 1, (u[i] * 100 / 7) * (w - 2) / 100, h - 2)
             let mx = x;
             ctx.fillStyle = '#000';
-            let mw = w/7;
+            let mw = w / 7;
             for (let j = 0; j < 7; j++) {
-                ctx.strokeRect(mx, y, mw-1, h-1);
+                ctx.strokeRect(mx, y, mw - 1, h - 1);
                 mx += mw;
             }
             y += 15;
         }
-        
+
     }
-    keyHandler (obj = this, e) {
+    keyHandler(obj = this, e) {
         switch (e.keyCode) {
             case 67:
             case 99:
                 obj.buttons.c = !obj.buttons.c;
-                sock.emit('update', {id: sock.id, property: ['buttons', 'c'], value: obj.buttons.c});
+                sock.emit('update', {
+                    id: sock.id,
+                    property: ['buttons', 'c'],
+                    value: obj.buttons.c
+                });
                 break;
             case 69:
             case 101:
                 obj.buttons.e = !obj.buttons.e;
-                sock.emit('update', {id: sock.id, property: ['buttons', 'e'], value: obj.buttons.e});
+                sock.emit('update', {
+                    id: sock.id,
+                    property: ['buttons', 'e'],
+                    value: obj.buttons.e
+                });
                 break;
         }
         // [1..8]
         if (e.keyCode >= 49 && e.keyCode < 57) {
-            Tank.prototype.upgrade(obj, e.key|0);
+            Tank.prototype.upgrade(obj, e.key | 0);
         }
     }
-    move (obj = this) {
-        let dx = 0, dy = 0;
+    move(obj = this) {
+        let dx = 0,
+            dy = 0;
         let buttons = obj.moveButtons;
         if (buttons.left) dx = -1;
         if (buttons.right) dx = 1;
@@ -310,7 +319,10 @@ module.exports = class Tank {
         props.set('y', valueY);
 
         if (dx || dy)
-            sock.emit('update', {id: sock.id, props: Array.from(props.entries())})
+            sock.emit('update', {
+                id: sock.id,
+                props: Array.from(props.entries())
+            })
     }
     rotate(obj = this, e) {
         if (obj.buttons && obj.buttons.c) return;
@@ -319,30 +331,34 @@ module.exports = class Tank {
         let directionY = e.clientY - obj.y;
         let radians = Math.atan2(directionX, -directionY);
         let angle = obj.angle = (radians * z + 270) / z;
-        sock.emit('update', {id: sock.id, property: 'angle', value: angle});
+        sock.emit('update', {
+            id: sock.id,
+            property: 'angle',
+            value: angle
+        });
         // for (let i of obj.guns) {
         //     i.angle = (radians * z + 270) / z;
         // }
     }
-    draw (obj = this) {
+    draw(obj = this) {
         // if (!this.died)
         //     Tank.prototype.healthDrawer.draw();
         // if (!obj.buttons) return;
 
         for (let i of obj.bullets) {
             ctx.beginPath();
-            ctx.arc(i.x, i.y, obj.bulletR, 0, 2*Math.PI, false);
+            ctx.arc(i.x, i.y, obj.bulletR, 0, 2 * Math.PI, false);
             ctx.lineWidth = 1;
             ctx.stroke();
             ctx.fillStyle = 'red';
             ctx.fill();
             ctx.closePath();
         }
-        
+
         ctx.save();
         ctx.translate(obj.x, obj.y);
         ctx.rotate(obj.angle);
-        
+
         for (let i of obj.guns) {
             ctx.save()
             ctx.rotate(i.angle);
@@ -359,13 +375,13 @@ module.exports = class Tank {
 
         // ctx.rotate(0);
         // ctx.translate(-obj.x, -obj.y);
-        
+
 
         // ctx.translate(obj.x, obj.y);
         // ctx.rotate(obj.angle);
         // ctx.save();
         ctx.beginPath();
-        ctx.arc(0, 0, obj.r, 0, 2*Math.PI, false);
+        ctx.arc(0, 0, obj.r, 0, 2 * Math.PI, false);
         ctx.lineWidth = 3;
         ctx.stroke();
         ctx.fillStyle = obj.color;
@@ -373,12 +389,12 @@ module.exports = class Tank {
         ctx.closePath();
         ctx.restore();
     }
-    shoot (obj = this) {
+    shoot(obj = this) {
         if (!obj.canShoot) return;
         sock.emit('shoot');
         // else if (e && e.button !== 0) return;
         // else if (!mousedown) return;
-        
+
         // console.log(obj);
 
         // for (let i of obj.guns) {
@@ -417,7 +433,7 @@ module.exports = class Tank {
         // obj.canShoot = false;
         // setTimeout(() => obj.canShoot = true, obj.reloadDelay);
     }
-    get simplify () {
+    get simplify() {
         return {
             id: this.id,
             x: this.x,

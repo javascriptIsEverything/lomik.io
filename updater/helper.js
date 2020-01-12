@@ -25,8 +25,9 @@ let classStructure = {
     machineGun: null
 };
 
-function move (player) {
-    let dx = 0, dy = 0;
+function move(player) {
+    let dx = 0,
+        dy = 0;
     if (player.isMoving) {
         let buttons = player.moveButtons;
         if (buttons.left) dx = -1;
@@ -49,20 +50,21 @@ function move (player) {
         }
     }
 }
-function isOutOfBox (obj) {
-    let r = obj.r|0;
+
+function isOutOfBox(obj) {
+    let r = obj.r | 0;
     if (obj.x - r <= 0)
         obj.x = r;
     else if (obj.x + r >= 600)
-        obj.x = 600 - (r||obj.w|0);
+        obj.x = 600 - (r || obj.w | 0);
     if (obj.y - r <= 0)
         obj.y = r;
     else if (obj.y + r >= 600)
-        obj.y = 600 - (r||obj.h|0);
+        obj.y = 600 - (r || obj.h | 0);
 }
 
-function updateLevel (player) {
-    if (player.level > player.classPath.length*2) {
+function updateLevel(player) {
+    if (player.level > player.classPath.length * 2) {
         player.availableClasses = {};
         let tmp = classStructure;
         for (let i = 0, len = player.classPath.length; i < len; i++) {
@@ -71,11 +73,10 @@ function updateLevel (player) {
         for (let i in tmp) {
             player.availableClasses[i] = createClass(i);
         }
-    }
-    else player.availableClasses = [];
+    } else player.availableClasses = [];
 }
 
-function regen (obj, now) {
+function regen(obj, now) {
     if (obj.lastDamaged + obj.regeneration.delay < now) {
         obj.health += obj.regeneration.speed;
         if (obj.health > obj.maxHealth) {
