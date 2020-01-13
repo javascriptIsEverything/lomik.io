@@ -23,7 +23,7 @@ module.exports = class Tank {
             }
             return arr;
         })();
-        this.level = 0;
+        this.level = 1;
         this.prevLevelsTotal = 0;
         this.score = 0;
         this.buttons = {
@@ -259,6 +259,7 @@ module.exports = class Tank {
                     break;
             }
             ctx.fillRect(x, y + 1, (u[i] * 100 / 7) * (w - 2) / 100, h - 2)
+            
             let mx = x;
             ctx.fillStyle = '#000';
             let mw = w / 7;
@@ -297,13 +298,38 @@ module.exports = class Tank {
         }
     }
     move(obj = this) {
+        let movepoint = {
+            x: 0,
+            y: 0,
+        }
         let dx = 0,
             dy = 0;
         let buttons = obj.moveButtons;
-        if (buttons.left) dx = -1;
-        if (buttons.right) dx = 1;
-        if (buttons.up) dy = -1;
-        if (buttons.down) dy = 1;
+        // if (buttons.left) dx = -1;
+        // if (buttons.right) dx = 1;
+        // if (buttons.up) dy = -1;
+        // if (buttons.down) dy = 1;
+        if (buttons.left){
+            dx+=10;
+            movepoint.x = obj.x + obj.r;
+            console.log(movepoint.x,movepoint.y);
+        };
+        if (buttons.right){
+            dx-=10;
+            movepoint.x = obj.x - obj.r;
+            console.log(movepoint.x,movepoint.y);
+        };
+        ;
+        if (buttons.up){
+            dy-=10;
+            movepoint.y = obj.y - obj.r;
+            console.log(movepoint.x,movepoint.y);
+        };
+        if (buttons.down){
+            dy+=10;
+            movepoint.y = obj.y + obj.r;
+            console.log(movepoint.x,movepoint.y);
+        };
         // are keys opposite
         if (buttons.left && buttons.right) dx = 0;
         if (buttons.up && buttons.down) dy = 0;
