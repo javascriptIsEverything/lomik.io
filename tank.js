@@ -259,7 +259,7 @@ module.exports = class Tank {
                     ctx.fillStyle = 'white';
                     break;
             }
-            ctx.fillRect(x, y + 1, (u[i] * 100 / 7) * (w - 2) / 100, h - 2)
+            ctx.fillRect(x, y + 1, (u[i] * 100 / 7) * (w - 2) / 100, h - 2);//procent
             
             let mx = x;
             ctx.fillStyle = '#000';
