@@ -4,6 +4,7 @@ module.exports = class Tank {
         this.y = y;
         this.r = 10;
         this.id = id;
+        this.className = 'default';
         this.color = 'dodgerblue';
         this.upgradedNTimes = [0, 0, 0, 0, 0, 0, 0, 0, 0];
         this.classPath = [];
@@ -297,141 +298,13 @@ module.exports = class Tank {
             Tank.prototype.upgrade(obj, e.key | 0);
         }
     }
-    move(obj = this) {
-        let buttons = obj.moveButtons;
-        if (buttons.left) dx = -1;
-        if (buttons.right) dx = 1;
-        if (buttons.up) dy = -1;
-        if (buttons.down) dy = 1;
-        // are keys opposite
-        if (buttons.left && buttons.right) dx = 0;
-        if (buttons.up && buttons.down) dy = 0;
-
-        if (dx === 0 && dy === 0) return;
-
-        let valueX = +(obj.x + obj.speed * dx).toFixed(2);
-        let valueY = +(obj.y + obj.speed * dy).toFixed(2);
-        obj.x = valueX;
-        obj.y = valueY;
-        let props = new Map();
-        props.set('x', valueX);
-        props.set('y', valueY);
-
-        if (dx || dy)
-            sock.emit('update', {
-                id: sock.id,
-                props: Array.from(props.entries())
-            })
-    }
-    rotate(obj = this, e) {
-        if (obj.buttons && obj.buttons.c) return;
-        let z = 180 / Math.PI;
-        let directionX = e.clientX - obj.x;
-        let directionY = e.clientY - obj.y;
-        let radians = Math.atan2(directionX, -directionY);
-        let angle = obj.angle = (radians * z + 270) / z;
-        sock.emit('update', {
-            id: sock.id,
-            property: 'angle',
-            value: angle
-        });
-    }
-    draw(obj = this) {
-        for (let i of obj.bullets) {
-            ctx.beginPath();
-            ctx.arc(i.x, i.y, obj.bulletR, 0, 2 * Math.PI, false);
-            ctx.lineWidth = 1;
-            ctx.stroke();
-            ctx.fillStyle = 'red';
-            ctx.fill();
-            ctx.closePath();
-        }
-
-        ctx.save();
-        ctx.translate(obj.x, obj.y);
-        ctx.rotate(obj.angle);
-
-        for (let i of obj.guns) {
-            ctx.save()
-            ctx.rotate(i.angle);
-            let positions = [i.x, i.y, i.width, i.height];
-            // ctx.save();
-            // ctx.translate(i.x, i.y);
-            // ctx.rotate(i.angle);
-            ctx.fillStyle = 'grey';
-            ctx.fillRect(...positions)
-            ctx.fillStyle = '#000';
-            ctx.strokeRect(...positions);
-            ctx.restore();
-        }
-
-        // ctx.rotate(0);
-        // ctx.translate(-obj.x, -obj.y);
-
-
-        // ctx.translate(obj.x, obj.y);
-        // ctx.rotate(obj.angle);
-        // ctx.save();
-        ctx.beginPath();
-        ctx.arc(0, 0, obj.r, 0, 2 * Math.PI, false);
-        ctx.lineWidth = 3;
-        ctx.stroke();
-        ctx.fillStyle = obj.color;
-        ctx.fill();
-        ctx.closePath();
-        ctx.restore();
-    }
-    shoot(obj = this) {
-        if (!obj.canShoot) return;
-        sock.emit('shoot');
-        // else if (e && e.button !== 0) return;
-        // else if (!mousedown) return;
-
-        // console.log(obj);
-
-        // for (let i of obj.guns) {
-        //     let speedX = Math.cos(obj.angle + i.angle) * obj.bulletSpeed + Math.random() - .5;
-        //     let speedY = Math.sin(obj.angle + i.angle) * obj.bulletSpeed + Math.random() - .5;
-        //     obj.bullets.push({
-        //         lifeEnd: now() + obj.bulletLifeTime,
-        //         health: obj.penetration,
-        //         speedX: +speedX.toFixed(2),
-        //         speedY: +speedY.toFixed(2),
-        //         x: +(obj.x + i.x + speedX*3).toFixed(2),
-        //         y: +(obj.y + i.y + speedY*3).toFixed(2)
-        //     });
-        //     // setTimeout(obj.bullets.shift, obj.bulletLifeTime);
-        // }
-
-        // let valueX = obj.x - Math.cos(obj.angle)/.5;
-        // let valueY = obj.y - Math.sin(obj.angle)/.5;
-        // // sock.emit('update', {id: sock.id, property: 'x', value: valueX});
-        // // sock.emit('update', {id: sock.id, property: 'y', value: valueY});
-        // // sock.emit('update', {id: sock.id, property: 'bullets', value: obj.bullets});
-        // let props = new Map();
-        // props.set('x', +valueX.toFixed(2));
-        // props.set('y', +valueY.toFixed(2));
-        // props.set('bullets', obj.bullets);
-
-        // sock.emit('update', {id: sock.id, props: Array.from(props.entries())});
-
-        // let speedX = Math.cos(obj.angle);
-        // let speedY = Math.sin(obj.angle);
-        // setTimeout(() => {
-        //     obj.bullets = obj.bullets.slice(obj.guns.length);
-        //     sock.emit('update', {id: sock.id, property: 'bullets', value: obj.bullets});
-        // }, obj.bulletLifeTime);
-
-        // obj.canShoot = false;
-        // setTimeout(() => obj.canShoot = true, obj.reloadDelay);
-    }
     get simplify() {
         return {
             id: this.id,
             x: this.x,
             y: this.y,
             r: this.r,
-            className: 'default',
+            className: this.className,
             classPath: this.classPath,
             canShoot: this.canShoot,
             guns: this.guns,

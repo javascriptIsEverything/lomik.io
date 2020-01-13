@@ -160,7 +160,7 @@ io.on('connection', sock => {
     sock.on('rotate', function (obj) {
         let player = players[sock.id];
         if (!player || !obj) return;
-        player.angle = obj.angle;
+        player.angle = obj.angle|0;
         // io.emit('update', {id: sock.id, property: 'angle', value: obj.angle});
     });
 
