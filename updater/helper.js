@@ -20,7 +20,9 @@ let classStructure = {
             octoTank: null
         }
     },
-    sniper: null,
+    sniper:{
+        overseer: null,
+    },
     machineGun: null
 };
 
