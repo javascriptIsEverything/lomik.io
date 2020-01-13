@@ -23,7 +23,14 @@ let classStructure = {
     sniper:{
         overseer: null,
     },
-    machineGun: null
+    machineGun: {
+        destroyer: {
+            hybrid: null,
+            annihilator: null,
+            skimmer: null,
+        },
+        gunner: null,
+    }
 };
 
 function move(player) {
