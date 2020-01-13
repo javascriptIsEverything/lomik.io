@@ -14,7 +14,11 @@ function RectCircleColliding(circle, rect){
 
 
 function updateScore (obj, cellMaxHealth) {
-    obj.score += Math.ceil(cellMaxHealth/2 * 2);
+    let scoreplus = 0.5;
+    if (obj.level > 30) {
+        scoreplus = 0.2;
+    }
+    obj.score += Math.ceil(cellMaxHealth * obj.level *scoreplus) ;
 
     let levels = obj.levelSettings;
     if (obj.score >= obj.prevLevelsTotal + levels[obj.level+1]) {
