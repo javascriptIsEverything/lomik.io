@@ -44,8 +44,16 @@ module.exports = function (type = 'default') {
                 width: 30,
                 height: 10,
                 angle: 0,
-                points: [[0, 5], [-20, 10], [-20, -10], [0, -5],[0, 5], [20, 10], [20, -10], [0, -5]],
-            }
+                points: [[0, 5], [-20, 10], [-20, -10], [0, -5]],
+            },
+            {
+                x: 0,
+                y: -this.r/2,
+                width: 30,
+                height: 10,
+                angle: -Math.PI,
+                points: [[0, 5], [20, 10], [20, -10], [0, -5]],
+            },
         ]
     }
     else if (type == 'sniper') {
