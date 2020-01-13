@@ -168,6 +168,7 @@ io.on('connection', sock => {
         let player = players[sock.id];
         if (!player) return;
         player.score += 1000;
+        updateLevel(player);
     });
 
     sock.on('changeTank', function (n) {

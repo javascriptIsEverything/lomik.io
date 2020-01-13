@@ -563,7 +563,6 @@ class Tank {
     }
     keyHandler (obj = this, e) {
         switch (e.keyCode) {
-
             case 67:
             case 99:
                 obj.buttons.c = !obj.buttons.c;
@@ -651,7 +650,7 @@ class Tank {
             if (i.points) {
                 let points = i.points;
                 ctx.beginPath();
-                for (let j in points) {
+                for (let j = 0; j < points.length; j++) {
                     if (j == 0)
                         ctx.moveTo(points[j][0], points[j][1]);
                     else 
@@ -675,7 +674,7 @@ class Tank {
             }
         }
 
-        // drawing player's cirlce
+        // drawing player's circle
         ctx.beginPath();
         ctx.arc(0, 0, obj.r, 0, 2*Math.PI, false);
         ctx.lineWidth = 3;
