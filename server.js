@@ -258,4 +258,4 @@ io.on('connection', sock => {
 });
     
 app.use(express.static(__dirname+'/client'));
-server.listen(8080, () => console.log('Lomik.io running at 8080.'))
+server.listen(8080, () => console.log('Lomik.io running at 8080.'));
