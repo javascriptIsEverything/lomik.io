@@ -1,6 +1,6 @@
 let random = (min, max) => ~~(Math.random() * (max - min) + min);
 
-module.exports = (players, cells) => {
+module.exports = (players = {}, cells = []) => {
     return class Geometry {
         constructor (type) {
             this.w = 15;
@@ -113,8 +113,10 @@ module.exports = (players, cells) => {
             this.x += ~~vx;
             this.y += ~~vy;
         }
-        createCell () {
-            let type = random(0, 11);
+        createCell (type) {
+            if (type) 
+                return new Geometry(type);
+            type = random(0, 11);
             switch (type) {
                 case 0: case 1: case 2: case 3:
                     type = 'square';

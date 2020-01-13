@@ -242,7 +242,6 @@ function game () {
         let player = players[i];
         drawHealth(player);
         draw(player);
-
     }
     for (let i = 0; i < enemies.length; i++) {
         draw(enemies[i])
@@ -264,8 +263,9 @@ function game () {
         ctx.fillRect(0, 0, 600, 600);
     }
     let player = players[sock.id];
+    if (!player) return;
     if (mousedown && player.canShoot
-        || player.buttons.e
+        || player.buttons.e && player.canShoot
     ) shoot(player);
 
     Tank.prototype.drawUpgrades(player);

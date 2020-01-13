@@ -164,10 +164,16 @@ io.on('connection', sock => {
         // io.emit('update', {id: sock.id, property: 'angle', value: obj.angle});
     });
 
+    sock.on('score', function () {
+        let player = players[sock.id];
+        if (!player) return;
+        player.score += 1000;
+    });
+
     sock.on('changeTank', function (n) {
         let player = players[sock.id];
         if (!player) return;
-        classes.call(player, player.availableClasses[n].className);
+        classes.call(player, player.availableClasses[n].className, player);
         updateLevel(player);
     });
 

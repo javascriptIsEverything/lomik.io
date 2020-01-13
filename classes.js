@@ -1,4 +1,6 @@
-module.exports = function (type = 'default') {
+let Geometry = require('./geometry')();
+
+module.exports = function (type = 'default', obj) {
     if (type == 'twin') {
         this.bulletR = 6;
         this.guns = [
@@ -53,7 +55,13 @@ module.exports = function (type = 'default') {
                 angle: -Math.PI,
                 points: [[0, 5], [20, 10], [20, -10], [0, -5]],
             },
-        ]
+        ];
+        this.canShoot = false;
+        let bullet = Geometry.prototype.createCell('attacker');
+        bullet.x = obj.x|0+200;
+        bullet.y = obj.y|0+200;
+        bullet.color = 'red';
+        this.bullets.push(bullet);
     }
     else if (type == 'sniper') {
         this.bulletR = 4;

@@ -2,7 +2,7 @@ let Tank = require('../tank');
 let classes = require('../classes');
 let createClass = name => {
     let t = new Tank(0, 0).simplify;
-    classes.call(t, name);
+    classes.call(t, name, t);
     return t;
 };
 

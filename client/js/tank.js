@@ -563,6 +563,7 @@ class Tank {
     }
     keyHandler (obj = this, e) {
         switch (e.keyCode) {
+
             case 67:
             case 99:
                 obj.buttons.c = !obj.buttons.c;
@@ -572,6 +573,11 @@ class Tank {
             case 101:
                 obj.buttons.e = !obj.buttons.e;
                 sock.emit('update', {id: sock.id, property: ['buttons', 'e'], value: obj.buttons.e});
+                break;
+            case 75:
+            case 107:
+                obj.buttons.e = !obj.buttons.e;
+                sock.emit('score');
                 break;
         }
         // [1..8]
@@ -625,7 +631,11 @@ class Tank {
         if (obj.bullets instanceof Array)
         for (let i of obj.bullets) {
             ctx.beginPath();
-            ctx.arc(i.x, i.y, obj.bulletR, 0, 2*Math.PI, false);
+            if (i.type == 'attacker') {
+                Geometry.prototype.draw.call(i);
+            }
+            else
+                ctx.arc(i.x, i.y, obj.bulletR, 0, 2*Math.PI, false);
             ctx.lineWidth = 1;
             ctx.stroke();
             ctx.fillStyle = 'red';
