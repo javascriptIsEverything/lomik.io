@@ -298,38 +298,11 @@ module.exports = class Tank {
         }
     }
     move(obj = this) {
-        let movepoint = {
-            x: 0,
-            y: 0,
-        }
-        let dx = 0,
-            dy = 0;
         let buttons = obj.moveButtons;
-        // if (buttons.left) dx = -1;
-        // if (buttons.right) dx = 1;
-        // if (buttons.up) dy = -1;
-        // if (buttons.down) dy = 1;
-        if (buttons.left){
-            dx+=10;
-            movepoint.x = obj.x + obj.r;
-            console.log(movepoint.x,movepoint.y);
-        };
-        if (buttons.right){
-            dx-=10;
-            movepoint.x = obj.x - obj.r;
-            console.log(movepoint.x,movepoint.y);
-        };
-        ;
-        if (buttons.up){
-            dy-=10;
-            movepoint.y = obj.y - obj.r;
-            console.log(movepoint.x,movepoint.y);
-        };
-        if (buttons.down){
-            dy+=10;
-            movepoint.y = obj.y + obj.r;
-            console.log(movepoint.x,movepoint.y);
-        };
+        if (buttons.left) dx = -1;
+        if (buttons.right) dx = 1;
+        if (buttons.up) dy = -1;
+        if (buttons.down) dy = 1;
         // are keys opposite
         if (buttons.left && buttons.right) dx = 0;
         if (buttons.up && buttons.down) dy = 0;
@@ -362,15 +335,8 @@ module.exports = class Tank {
             property: 'angle',
             value: angle
         });
-        // for (let i of obj.guns) {
-        //     i.angle = (radians * z + 270) / z;
-        // }
     }
     draw(obj = this) {
-        // if (!this.died)
-        //     Tank.prototype.healthDrawer.draw();
-        // if (!obj.buttons) return;
-
         for (let i of obj.bullets) {
             ctx.beginPath();
             ctx.arc(i.x, i.y, obj.bulletR, 0, 2 * Math.PI, false);
