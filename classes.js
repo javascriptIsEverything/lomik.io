@@ -35,7 +35,6 @@ module.exports = function (type = 'default') {
     }
     else if ( type == "overseer") {
         this.bulletR = 6;
-        this.reloadDelay -= 250;
         this.spread = [-.6, .6];
         this.guns = [
             {
