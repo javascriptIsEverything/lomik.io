@@ -12,7 +12,7 @@ function RectCircleColliding(circle, rect){
     return (dx**2 + dy**2 <= circle.r**2);
 }
 
-function updateScore (obj, cellType) {
+global.updateScore = function (obj, cellType) {
     let score = 0;
     switch (cellType) {
         case 'square':

@@ -3,6 +3,7 @@ let express = require('express');
 let app = express();
 let server = require('http').createServer(app);
 let socketio = require('socket.io');
+require('./updater');
 
 // global reusable variables and functions
 global.now = 0;
@@ -18,7 +19,6 @@ global.Geometry = require('./geometry');
 global.collision = require('./collision');
 let Tank = require('./tank');
 let classes = require('./classes');
-let helper = require('./updater');
 let entities = require('./entities');
 let random = (min, max) => ~~(Math.random() * (max - min) + min);
 let io = socketio(server);
@@ -90,7 +90,9 @@ io.on('connection', sock => {
         let player = players[sock.id];
         if (!player) return;
         player.score += 1000;
+        player.level++;
         updateLevel(player);
+        updateScore(player);
     });
 
     sock.on('changeTank', function (n) {
