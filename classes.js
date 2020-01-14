@@ -429,7 +429,123 @@ module.exports = function (type = 'default', obj) {
                 angle: 0
             },
         ]
-    } else return;
+    } else if (type == "flankguard") {// body dimigov elnoxy
+        this.bulletR = 4;
+        this.bulletSpeed += .4;
+        this.bulletDamage += .5;
+        this.spread = [-.3, .3];
+        this.guns = [{
+            x: 0,
+            y: -this.r / 2,
+            width: 30,
+            height: 10,
+            angle: 0,
+        },{
+            x: 0,
+            y: -this.r / 2,
+            width: 25,
+            height: 10,
+            angle: Math.PI,
+        }]
+    } else if (type == "tri_angle") {//
+        this.bulletR = 4;
+        this.bulletSpeed += .4;
+        this.bulletDamage += .5;
+        this.spread = [-.3, .3];
+        this.guns = [{
+            x: 0,
+            y: -this.r / 2,
+            width: 30,
+            height: 10,
+            angle: 0,
+        },{
+            x: 0,
+            y: -this.r / 2,
+            width: 23,
+            height: 10,
+            angle: 2.6,
+        },{
+            x: 0,
+            y: -this.r / 2,
+            width: 23,
+            height: 10,
+            angle: -2.6,
+        },]
+    } else if (type == "booster") {//
+        this.bulletR = 4;
+        this.bulletSpeed += .4;
+        this.bulletDamage += .5;
+        this.spread = [-.3, .3];
+        this.guns = [{
+            x: 0,
+            y: -this.r / 2,
+            width: 30,
+            height: 10,
+            angle: 0,
+        },{
+            x: 0,
+            y: -this.r / 2,
+            width: 20,
+            height: 10,
+            angle: 2.4,
+        },{
+            x: 0,
+            y: -this.r / 2,
+            width: 20,
+            height: 10,
+            angle: -2.4,
+        },
+        {
+            x: 0,
+            y: -this.r / 2,
+            width: 23,
+            height: 10,
+            angle: -2.6,
+        },{
+            x: 0,
+            y: -this.r / 2,
+            width: 23,
+            height: 10,
+            angle: 2.6,
+        },]
+    } else if (type == "fighter") {//
+        this.bulletR = 4;
+        this.bulletSpeed += .4;
+        this.bulletDamage += .5;
+        this.spread = [-.3, .3];
+        this.guns = [{
+            x: 0,
+            y: -this.r / 2,
+            width: 30,
+            height: 10,
+            angle: 0,
+        },{
+            x: 0,
+            y: -this.r / 2,
+            width: 23,
+            height: 10,
+            angle: Math.PI/2,
+        },{
+            x: 0,
+            y: -this.r / 2,
+            width: 23,
+            height: 10,
+            angle: -Math.PI/2,
+        },
+        {
+            x: 0,
+            y: -this.r / 2,
+            width: 23,
+            height: 10,
+            angle: -2.6,
+        },{
+            x: 0,
+            y: -this.r / 2,
+            width: 23,
+            height: 10,
+            angle: 2.6,
+        },]
+    }else return;
     this.className = type;
     this.classPath.push(type);
 }

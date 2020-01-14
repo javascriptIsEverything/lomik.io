@@ -30,7 +30,13 @@ let classStructure = {
             skimmer: null,
         },
         gunner: null,
-    }
+    },
+    flankguard: {
+        tri_angle: {
+            booster: null,
+            fighter: null,
+        },
+    },
 };
 
 function move(player) {
