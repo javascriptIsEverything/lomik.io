@@ -1,5 +1,3 @@
-let Geometry = require('./geometry')();
-
 module.exports = function (type = 'default', obj) {
     if (type == 'twin') {
         this.bulletR = 6;

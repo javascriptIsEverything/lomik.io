@@ -17,10 +17,10 @@ module.exports = class Tank {
         this.health = this.maxHealth;
         this.levelSettings = (() => {
             let arr = [0],
-                sc = 10;
+                sc = 5;
             for (let i = 0; i < 45; i++) {
                 arr.push(sc);
-                sc = ~~(sc * 1.2);
+                sc = ~~(sc * 1.1);
             }
             return arr;
         })();
