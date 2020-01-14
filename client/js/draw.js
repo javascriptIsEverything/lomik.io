@@ -73,6 +73,7 @@ class Geometry {
     constructor (type) {
         this.w = 15;
         this.h = 15;
+        this.r = 7.5;
         this.x = random(this.w, cw-this.w),
         this.y = random(this.h, ch-this.h);
         if (type == 'square') {
@@ -119,18 +120,18 @@ class Geometry {
             ctx.scale(obj.scale, obj.scale);
         }
         if (obj.type == 'square') {
+            ctx.beginPath();
             let coordinates = [-obj.w/2, -obj.h/2, obj.w, obj.h];
             if (!scale)
                 ctx.strokeRect(...coordinates);
-            // let grd = ctx.createLinearGradient(0, 0, obj.w, obj.h);
-            // grd.addColorStop(0, "red");
-            // grd.addColorStop(.2, "orange");
-            // grd.addColorStop(.4, "yellow");
-            // grd.addColorStop(.6, "green");
-            // grd.addColorStop(.8, "blue");
-            // grd.addColorStop(1, "purple");
-            
-            // ctx.fillStyle = grd;
+            ctx.lineTo(-obj.r,obj.r);
+            ctx.lineTo(obj.r,obj.r);
+            ctx.lineTo(obj.r,-obj.r);
+            ctx.lineTo(-obj.r,-obj.r);
+            ctx.fillStyle = 'orange';
+            ctx.stroke()
+            ctx.fill();
+            ctx.closePath()
             ctx.fillStyle = 'rgb(255, 232, 105)';
             // ctx.fillStyle = 'orange';
             ctx.fillRect(...coordinates);
@@ -144,7 +145,8 @@ class Geometry {
             ctx.lineTo(obj.w/2-4, obj.h-2);
             ctx.lineTo(-obj.w/2, -obj.h/2);
             ctx.fill();
-            ctx.fillStyle = '#000';
+            // ctx.fillStyle = '#000';
+            ctx.closePath();
         }
         else if (obj.type == 'pentagon') {
             ctx.beginPath();
@@ -159,6 +161,7 @@ class Geometry {
             // ctx.lineTo(-obj.w/2, -obj.h/2);
             ctx.fill();
             ctx.fillStyle = '#000';
+            ctx.closePath();
         }
         else if (obj.type == 'hexagon') {
             ctx.beginPath();
@@ -186,6 +189,7 @@ class Geometry {
             // ctx.stroke()
             ctx.fill();
             ctx.fillStyle = '#000';
+            ctx.closePath();
         }
         else if (obj.type == 'attacker') {
             ctx.beginPath();
@@ -197,6 +201,7 @@ class Geometry {
             ctx.lineTo(-obj.w/2, -obj.h/2);
             ctx.fill();
             ctx.fillStyle = '#000';
+            ctx.closePath();
         }
         if (!scale)
             ctx.stroke();
@@ -223,11 +228,12 @@ function drawHealth(obj) {
         width = wholeWidth;
         return;
     }
-
+    ctx.beginPath();
     ctx.fillStyle = '#000';
     ctx.fillRect(x-w/2-5, y + h+3, w+10, 5);
     ctx.fillStyle = 'lime';
     ctx.fillRect(x-w/2-4, y + h+4, width, 3);
+    ctx.closePath();
 }
 
 const scene = new Scene();
@@ -236,8 +242,27 @@ let cells = [];
 let draw = Tank.prototype.draw;
 let shoot = Tank.prototype.shoot;
 
+function DrawFortress() {
+    let a = 50,
+        x = cw/2 - a/2,
+        y =ch/2 - a/2;
+    ctx.beginPath
+    ctx.moveTo(x,y);
+    ctx.lineTo(x + a/2, y - a/2)
+    ctx.lineTo(x + a ,y);
+    ctx.lineTo(x + a ,y + a);
+    ctx.lineTo(x ,y + a);
+    ctx.lineTo(x,y)
+    ctx.lineTo(x + a,y)
+    ctx.strokeStyle = "purpule";
+    ctx.fill()
+    ctx.stroke()
+    ctx.closePath()
+}
+
 function game () {
     scene.clear();
+    DrawFortress()
     for (let i in players) {
         let player = players[i];
         drawHealth(player);
@@ -273,4 +298,5 @@ function game () {
     scene.drawMiniMap(player.x, player.y);
 
     requestAnimationFrame(game);
+    
 }

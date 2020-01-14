@@ -2,11 +2,10 @@ function RectCircleColliding(circle, rect){
     let distX = Math.abs(circle.x - rect.x);
     let distY = Math.abs(circle.y - rect.y);
 
-    if (distX > (rect.w/2 + circle.r)) { return false; }
-    if (distY > (rect.h/2 + circle.r)) { return false; }
-
-    if (distX <= (rect.w/2) && distY <= (rect.h/2)) { return true; }
-
+    
+    if (distX+distY < circle.r + rect.h/2) {
+        return true;
+    }
     let dx = distX;
     let dy = distY;
     return (dx**2 + dy**2 <= circle.r**2);
