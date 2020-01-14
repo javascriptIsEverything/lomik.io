@@ -5,24 +5,21 @@ let server = require('http').createServer(app);
 let socketio = require('socket.io');
 
 // global reusable variables and functions
-let now = 0;
-let isNight = true;
+global.now = 0;
+global.isNight = false;
 let clients = {};
-let players = {};
-let cells = [];
-let enemies = [];
+global.players = {};
+global.cells = [];
+global.enemies = [];
 let intervalId = null;
 let playersLength = 0;
 // send objects to classes
-let Geometry = require('./geometry')(players, cells);
-let collision = require('./collision')(Geometry);
+global.Geometry = require('./geometry');
+global.collision = require('./collision');
 let Tank = require('./tank');
-let helper = require('./updater/helper');
 let classes = require('./classes');
-let move = helper.move;
-let isOutOfBox = helper.isOutOfBox;
-let updateLevel = helper.updateLevel;
-let regen = helper.regen;
+let helper = require('./updater');
+let entities = require('./entities');
 let random = (min, max) => ~~(Math.random() * (max - min) + min);
 let io = socketio(server);
 
@@ -43,104 +40,29 @@ io.on('connection', sock => {
             cells.push(Geometry.prototype.createCell());
         }
         let t = 0;
-        setInterval(() => {
-            isNight = !isNight;
-            if (enemies.length > 3) return;
-            for (let i = 0; i < 1; i++) {
-                enemies.push(new Tank(
-                    ~~(Math.random() * 580 + 10),
-                    ~~(Math.random() * 580 + 10),
-                    i // id
-                ));
-            }
-        }, 30000);
+        // setInterval(() => {
+        //     isNight = !isNight;
+        //     if (enemies.length > 3) return;
+        //     for (let i = 0; i < 1; i++) {
+        //         enemies.push(new Tank(
+        //             ~~(Math.random() * 580 + 10),
+        //             ~~(Math.random() * 580 + 10),
+        //             i // id
+        //         ));
+        //     }
+        // }, 30000);
         intervalId = setInterval(() => {
-            let updatedPlayers = {};
             now = Date.now();
-            for (let i in players) {
-                let player = players[i];
-                let level = player.level;
-                collision.bulletCollision(player, cells);
-                collision.bodyCollision(player, cells);
-                if (level < player.level)
-                    updateLevel(player);
-
-                if (player.health < player.maxHealth) {
-                    regen(player, now);
-                }
-
-                if (player.buttons.c === true)
-                    player.angle += .02;
-
-                if (player.bullets.length) {
-                    let bullets = player.bullets;
-                    let len = bullets.length;
-
-                    for (let i = 0; i < len; i++) {
-                        let bullet = bullets[i];
-                        if (bullet.aliveUntil < now) {
-                            bullets.splice(i, 1);
-                            len--;
-                            continue;
-                        }
-                        bullet.x += bullet.speedX;
-                        bullet.y += bullet.speedY;
-                        isOutOfBox(player);
-                    }
-                }
-                move(player);
-                updatedPlayers[player.id] = player.simplify;
-            }
+            // gets lightweight variant of players object, so you can update it easier
+            let updatedPlayers = entities.checkPlayers();
             // enemies
-            for (let j = 0; j < enemies.length; j++) {
-                if (isNight)
-                    Geometry.prototype.attack.call(enemies[j]);
-                if (t + 2000 < now) {
-                    for (let n = 0, len = enemies[j].guns.length; n < len; n++) {
-                        let i = enemies[j].guns;
-                        let speedX = Math.cos(enemies[j].angle + i.angle) * enemies[j].bulletSpeed + Math.random() - .5;
-                        let speedY = Math.sin(enemies[j].angle + i.angle) * enemies[j].bulletSpeed + Math.random() - .5;
-                        enemies[j].bullets.push({
-                            lifeEnd: now + enemies[j].bulletLifeTime,
-                            health: enemies[j].penetration,
-                            speedX: +speedX.toFixed(2),
-                            speedY: +speedY.toFixed(2),
-                            x: +(enemies[j].x + i.x + speedX*3).toFixed(2),
-                            y: +(enemies[j].y + i.y + speedY*3).toFixed(2)
-                        });
-                    }
-                    t = now;
-                }
-                if (enemies[j].bullets.length) {
-                    for (let n = 0, len = enemies[j].bullets.length; n < len; n++) {
-                        let bullet = enemies[j].bullets;
-                        if (bullet.aliveUntil < now) {
-                            enemies[0].bullets.splice(n, 1);
-                            continue;
-                        }
-                        bullet.x += bullet.speedX;
-                        bullet.y += bullet.speedY;
-                    }
-                }
-            }
-            for (let j = 0, len = cells.length; j < len; j++) {
-                let i = cells[j];
-                if (i.dead) {
-                    i.scale += .1;
-                    if (i.scale >= 2)
-                        cells.splice(j, 1);
-                        len--;
-                    continue;
-                }
-                else if (i.type == 'attacker') {
-                    i.attack();
-                }
-                if (i.health < i.maxHealth) {
-                    regen(i, now);
-                }
-                i.recalculate();
-            }
-            io.emit('update', {objects: {players: updatedPlayers, cells, enemies, isNight}});
+            entities.checkEnemies(t);
+            entities.checkCells();
+
+            io.emit('update', {objects: {
+                players: updatedPlayers,
+                cells, enemies, isNight
+            }});
         }, 1000/60);
     }
     // console.log(`${sock.id} connected!`);
@@ -177,7 +99,6 @@ io.on('connection', sock => {
         classes.call(player, player.availableClasses[n].className, player);
         updateLevel(player);
     });
-
 
     sock.on('upgrade', function (key) {
         let player = players[sock.id];
