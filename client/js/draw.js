@@ -258,6 +258,7 @@ let fortress = {
 }
 
 
+
 function game () {
     scene.clear();
     fortress.DrawFortress();
