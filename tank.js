@@ -20,7 +20,7 @@ module.exports = class Tank {
                 sc = 5;
             for (let i = 0; i < 45; i++) {
                 arr.push(sc);
-                sc = ~~(sc * 1.1);
+                sc = Math.ceil(sc * 1.1);
             }
             return arr;
         })();
@@ -34,6 +34,7 @@ module.exports = class Tank {
         this.guns = [{
             x: 0,
             y: -this.r / 2,
+            r: 5,
             width: 30,
             height: 8,
             angle: 0
@@ -76,7 +77,6 @@ module.exports = class Tank {
             speed: .02,
             delay: 3000
         };
-        this.bulletR = 5;
     }
     upgrade(obj = this, n) {
         n--;
@@ -115,7 +115,7 @@ module.exports = class Tank {
 
         if (obj.upgradedNTimes[n] !== undefined) {
             obj.upgradedNTimes[n]++;
-            obj.upgradedNTimes[8] -= 1;
+            obj.upgradedNTimes[8]--;
             return true;
         }
     }

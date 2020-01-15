@@ -11,6 +11,15 @@ function RectCircleColliding(circle, rect){
     return (dx**2 + dy**2 <= circle.r**2);
 }
 
+function CircularCollision(circle1, circle2) {
+    return ((circle1.x - circle2.x)**2 + (circle1.y - circle2.y)**2)**.5 < circle1.r + circle2.r;
+    // let dx = circle1.x - circle2.x;
+    // let dy = circle1.y - circle2.y;
+    // let distance = (dx * dx + dy * dy)**.5;
+
+    // return (distance < circle1.r + circle2.r);
+}
+
 global.updateScore = function (obj, cellType) {
     let score = 0;
     switch (cellType) {
@@ -43,13 +52,12 @@ global.updateScore = function (obj, cellType) {
     }
 }
 
-// let Geometry;
 module.exports = {
     bulletCollision (obj, cells) {
         for (let j of obj.bullets) {
             for (let i of cells) {
                 if (i.dead) return;
-                if (RectCircleColliding(j, i)) {
+                if (CircularCollision(j, i)) {
                     j.health -= i.bodyDamage + obj.penetration;
                     if (j.health <= 0) {
                         obj.bullets.splice(obj.bullets.indexOf(j), 1);
@@ -63,7 +71,7 @@ module.exports = {
                         updateScore(obj, i.type);
                         return;
                     }
-                    else i.lastDamaged = Date.now();
+                    else i.lastDamaged = now;
                     let vx, vy;
                     if (j.speedX < 0) {
                         vx = -1;
@@ -88,11 +96,11 @@ module.exports = {
     bodyCollision (obj, cells) {
         for (let i of cells) {
             if (i.dead) return;
-            if (RectCircleColliding(obj, i)) {
+            if (CircularCollision(obj, i))  {
                 obj.health -= i.bodyDamage;
                 if (obj.health <= 0)
                     obj.dead = true;
-                else obj.lastDamaged = Date.now();
+                else obj.lastDamaged = now;
                 i.health -= obj.bodyDamage;
                 if (i.health <= 0) {
                     i.dead = true;
@@ -102,7 +110,7 @@ module.exports = {
                     updateScore(obj, i.type);
                     return;
                 }
-                else i.lastDamaged = Date.now();
+                else i.lastDamaged = now;
                 let vx, vy;
                 if (obj.moveButtons.left === true) {
                     vx = -1;

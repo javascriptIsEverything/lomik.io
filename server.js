@@ -6,6 +6,7 @@ let socketio = require('socket.io');
 require('./updater');
 
 // global reusable variables and functions
+global.random = (min, max) => ~~(Math.random() * (max - min) + min);
 global.now = 0;
 global.isNight = false;
 let clients = {};
@@ -13,14 +14,13 @@ global.players = {};
 global.cells = [];
 global.enemies = [];
 let intervalId = null;
-let playersLength = 0;
+global.playersLength = 0;
 // send objects to classes
 global.Geometry = require('./geometry');
 global.collision = require('./collision');
 let Tank = require('./tank');
 let classes = require('./classes');
 let entities = require('./entities');
-let random = (min, max) => ~~(Math.random() * (max - min) + min);
 let io = socketio(server);
 
 io.on('connection', sock => {
@@ -124,7 +124,8 @@ io.on('connection', sock => {
                 speedX: +speedX.toFixed(2),
                 speedY: +speedY.toFixed(2),
                 x: +(player.x + i.x + speedX*3).toFixed(2),
-                y: +(player.y + i.y + speedY*3).toFixed(2)
+                y: +(player.y + i.y + speedY*3).toFixed(2),
+                r: i.r
             });
         }
         player.canShoot = false;
@@ -188,4 +189,7 @@ io.on('connection', sock => {
 });
     
 app.use(express.static(__dirname+'/client'));
-server.listen(8080, () => console.log('Lomik.io running at 8080.'));
+server.listen(8080, () => {
+    console.log('Lomik.io running at 8080.');
+    console.log('chi krage. banm era');
+});

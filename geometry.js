@@ -1,9 +1,8 @@
-let random = (min, max) => ~~(Math.random() * (max - min) + min);
-
 module.exports = class Geometry {
     constructor (type) {
         this.w = 15;
         this.h = 15;
+        this.r = 7.5;
         if (type === 'attacker') {
             this.w = 10;
             this.h = 10;
@@ -63,7 +62,6 @@ module.exports = class Geometry {
         this.type = type;
         this.direction = Math.random() > .5 ? 1 : -1;
         this.angle = random(0, 360);
-        this.angle = 0;
         this.dead = false;
         this.scale = 1;
     }
@@ -83,7 +81,6 @@ module.exports = class Geometry {
         if (this.angle >= 360) this.angle = 0; 
     }
     attack () {
-        if (Object.keys(players).length === 0) return;
         let distances = [];
         let ids = [];
         for (let i in players) {

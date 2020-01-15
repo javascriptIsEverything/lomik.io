@@ -617,15 +617,8 @@ class Tank {
         let radians = Math.atan2(directionX, -directionY);
         let angle = obj.angle = (radians * z + 270) / z;
         sock.emit('update', {id: sock.id, property: 'angle', value: angle});
-        // for (let i of obj.guns) {
-        //     i.angle = (radians * z + 270) / z;
-        // }
     }
     draw (obj = this) {
-        // if (!this.died)
-        //     Tank.prototype.healthDrawer.draw();
-        // if (!obj.buttons) return;
-
         ctx.fillStyle = 'red';
         if (obj.bullets instanceof Array)
         for (let i of obj.bullets) {
@@ -634,10 +627,9 @@ class Tank {
                 Geometry.prototype.draw.call(i);
             }
             else
-                ctx.arc(i.x, i.y, obj.bulletR, 0, 2*Math.PI, false);
+                ctx.arc(i.x, i.y, i.r, 0, 2*Math.PI, false);
             ctx.lineWidth = 1;
             ctx.stroke();
-            ctx.fillStyle = 'red';
             ctx.fill();
             ctx.closePath();
         }
@@ -651,10 +643,11 @@ class Tank {
                 let points = i.points;
                 ctx.beginPath();
                 for (let j = 0; j < points.length; j++) {
+                    let p = points[j];
                     if (j == 0)
-                        ctx.moveTo(points[j][0], points[j][1]);
+                        ctx.moveTo(p[0], p[1]);
                     else 
-                        ctx.lineTo(points[j][0], points[j][1]);
+                        ctx.lineTo(p[0], p[1]);
                 }
                 ctx.fillStyle = 'grey';
                 ctx.fill();

@@ -66,15 +66,15 @@ function move(player) {
 }
 
 function isOutOfBox(obj) {
-    let r = obj.r | 0;
+    let r = obj.r|0;
     if (obj.x - r <= 0)
         obj.x = r;
     else if (obj.x + r >= 600)
-        obj.x = 600 - (r || obj.w | 0);
+        obj.x = 600 - (r || obj.w|0);
     if (obj.y - r <= 0)
         obj.y = r;
     else if (obj.y + r >= 600)
-        obj.y = 600 - (r || obj.h | 0);
+        obj.y = 600 - (r || obj.h|0);
 }
 
 function updateLevel(player) {

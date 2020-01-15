@@ -101,11 +101,6 @@ class Geometry {
     die (obj = this) {
         cells.splice(cells.indexOf(obj), 1);
     }
-    drawHealth () {
-        if (this.dead) return;
-        // console.log(this)
-        // this.healthDrawer.draw(); // ! 
-    }
     draw (obj = this, scale = false) {
         obj.x += obj.vx;
         obj.y += obj.vy;
@@ -121,20 +116,15 @@ class Geometry {
         }
         if (obj.type == 'square') {
             ctx.beginPath();
-            let coordinates = [-obj.w/2, -obj.h/2, obj.w, obj.h];
-            if (!scale)
-                ctx.strokeRect(...coordinates);
             ctx.lineTo(-obj.r,obj.r);
             ctx.lineTo(obj.r,obj.r);
             ctx.lineTo(obj.r,-obj.r);
             ctx.lineTo(-obj.r,-obj.r);
-            ctx.fillStyle = 'orange';
-            ctx.stroke()
-            ctx.fill();
-            ctx.closePath()
             ctx.fillStyle = 'rgb(255, 232, 105)';
-            // ctx.fillStyle = 'orange';
-            ctx.fillRect(...coordinates);
+            if (!scale)
+                ctx.stroke();
+            ctx.fill();
+            ctx.closePath();
         }
         else if (obj.type == 'triangle') {
             ctx.beginPath();

@@ -1,6 +1,6 @@
 module.exports = function (type = 'default', obj) {
     if (type == 'twin') {
-        this.bulletR = 6;
+        let r = 6;
         this.guns = [{
                 x: 0,
                 y: -this.r,
@@ -15,9 +15,9 @@ module.exports = function (type = 'default', obj) {
                 height: 8,
                 angle: 0
             },
-        ]
+        ].map(i => {i.r = r; return i});
     } else if (type == 'machineGun') {
-        this.bulletR = 6;
+        let r = 6;
         this.reloadDelay -= 250;
         this.spread = [-.6, .6];
         this.guns = [{
@@ -32,15 +32,15 @@ module.exports = function (type = 'default', obj) {
                 [20, -10],
                 [0, -2]
             ]
-        }]
+        }].map(i => {i.r = r; return i});
     } else if (type == 'destroyer') {//big gun
-        this.bulletR = 10;
         this.bulletSpeed += .4;
         this.bulletDamage += .5;
         this.spread = [-.3, .3];
         this.guns = [{
             x: 0,
             y: -10,
+            r: 10,
             width: 25,
             height: 20,
             angle: 0,
@@ -60,7 +60,7 @@ module.exports = function (type = 'default', obj) {
             x: 0,
             y: 0,
             angle: Math.PI,
-                points: [
+            points: [
                 [0, 7],
                 [-20, 10],
                 [-20, -10],
@@ -68,38 +68,38 @@ module.exports = function (type = 'default', obj) {
             ],
         }]
     } else if (type == 'annihilator') {//biggggggg gun
-        this.bulletR = 25/2;
         this.bulletSpeed += .4;
         this.bulletDamage += .5;
         this.spread = [-.3, .3];
         this.guns = [{
             x: 0,
             y: -12.5,
+            r: 12.5,
             width: 30,
             height: 25,
             angle: 0,
         }]
     } else if (type == 'skimmer') {//big gun + norm gun
-        this.bulletR = 10;
         this.bulletSpeed += .4;
         this.bulletDamage += .5;
         this.spread = [-.3, .3];
         this.guns = [{
             x: 0,
             y: -8,
+            r: 8,
             width: 28,
             height: 16,
             angle: 0,
-            // bulletR: 14,
         },{
             x: 0,
             y: -10,
+            r: 10,
             width: 25,
             height: 20,
             angle: 0,
         }]
     } else if (type == 'gunner') {//mahine gunic hedo 4 stvlka
-        this.bulletR = 7;
+        let r = 3.5;
         this.guns = [{
                 x: 0,
                 y: -this.r,
@@ -128,7 +128,7 @@ module.exports = function (type = 'default', obj) {
                 height: 4,
                 angle: 0
             },
-        ]
+        ].map(i => {i.r = r; return i});
     } else if (type == 'sniper') {
         this.bulletR = 4;
         this.bulletSpeed += .4;
@@ -137,6 +137,7 @@ module.exports = function (type = 'default', obj) {
         this.guns = [{
             x: 0,
             y: -this.r / 2,
+            r: 5,
             width: 35,
             height: 10,
             angle: 0,
@@ -145,32 +146,31 @@ module.exports = function (type = 'default', obj) {
         this.bulletR = 6;
         this.spread = [-.6, .6];
         this.guns = [{
-                x: 0,
-                y: -this.r / 2,
-                width: 30,
-                height: 10,
-                angle: 0,
-                points: [
-                    [0, 5],
-                    [-20, 10],
-                    [-20, -10],
-                    [0, -5]
-                ],
-            },
-            {
-                x: 0,
-                y: -this.r / 2,
-                width: 30,
-                height: 10,
-                angle: -Math.PI,
-                points: [
-                    [0, 5],
-                    [20, 10],
-                    [20, -10],
-                    [0, -5]
-                ],
-            },
-        ];
+            x: 0,
+            y: -this.r / 2,
+            width: 30,
+            height: 10,
+            angle: 0,
+            points: [
+                [0, 5],
+                [-20, 10],
+                [-20, -10],
+                [0, -5]
+            ],
+        },
+        {
+            x: 0,
+            y: -this.r / 2,
+            width: 30,
+            height: 10,
+            angle: -Math.PI,
+            points: [
+                [0, 5],
+                [20, 10],
+                [20, -10],
+                [0, -5]
+            ],
+        }];
         this.canShoot = false;
         let bullet = Geometry.prototype.createCell('attacker');
         bullet.x = obj.x | 0 + 200;
@@ -178,259 +178,254 @@ module.exports = function (type = 'default', obj) {
         bullet.color = 'red';
         this.bullets.push(bullet);
     } else if (type == 'tripleTwin') {
-        this.bulletR = 6;
+        let r = 6;
         this.guns = [{
-                x: 0,
-                y: -this.r,
-                width: 30,
-                height: 10,
-                angle: 0
-            },
-            {
-                x: 0,
-                y: 0,
-                width: 30,
-                height: 10,
-                angle: 0
-            },
-            {
-                x: 0,
-                y: -this.r,
-                width: 30,
-                height: 10,
-                angle: Math.PI + 5.3
-            },
-            {
-                x: 0,
-                y: 0,
-                width: 30,
-                height: 10,
-                angle: Math.PI + 5.3
-            },
-            {
-                x: 0,
-                y: -this.r,
-                width: 30,
-                height: 10,
-                angle: Math.PI - 5.3
-            },
-            {
-                x: 0,
-                y: 0,
-                width: 30,
-                height: 10,
-                angle: Math.PI - 5.3
-            },
-        ]
+            x: 0,
+            y: -this.r,
+            width: 30,
+            height: 10,
+            angle: 0
+        },
+        {
+            x: 0,
+            y: 0,
+            width: 30,
+            height: 10,
+            angle: 0
+        },
+        {
+            x: 0,
+            y: -this.r,
+            width: 30,
+            height: 10,
+            angle: Math.PI + 5.3
+        },
+        {
+            x: 0,
+            y: 0,
+            width: 30,
+            height: 10,
+            angle: Math.PI + 5.3
+        },
+        {
+            x: 0,
+            y: -this.r,
+            width: 30,
+            height: 10,
+            angle: Math.PI - 5.3
+        },
+        {
+            x: 0,
+            y: 0,
+            width: 30,
+            height: 10,
+            angle: Math.PI - 5.3
+        },
+        ].map(i => {i.r = r; return i});
     } else if (type == 'quadTank') {
-        this.bulletR = 6;
+        let r = 6;
         this.guns = [{
-                x: 0,
-                y: -this.r / 2,
-                width: 30,
-                height: 10,
-                angle: 0
-            },
-            {
-                x: 0,
-                y: -this.r / 2,
-                width: 30,
-                height: 10,
-                angle: 1.55
-            },
-            {
-                x: 0,
-                y: -this.r / 2,
-                width: 30,
-                height: 10,
-                angle: Math.PI
-            },
-            {
-                x: 0,
-                y: -this.r / 2,
-                width: 30,
-                height: 10,
-                angle: -1.55
-            }
-        ]
+            x: 0,
+            y: -this.r / 2,
+            width: 30,
+            height: 10,
+            angle: 0
+        },
+        {
+            x: 0,
+            y: -this.r / 2,
+            width: 30,
+            height: 10,
+            angle: 1.55
+        },
+        {
+            x: 0,
+            y: -this.r / 2,
+            width: 30,
+            height: 10,
+            angle: Math.PI
+        },
+        {
+            x: 0,
+            y: -this.r / 2,
+            width: 30,
+            height: 10,
+            angle: -1.55
+        }].map(i => {i.r = r; return i});
     } else if (type == 'octoTank') {
-        this.bulletR = 6;
+        let r = 6;
         this.guns = [{
-                x: 0,
-                y: -this.r / 2,
-                width: 30,
-                height: 10,
-                angle: -1.55
-            },
-            {
-                x: 0,
-                y: -this.r / 2,
-                width: 30,
-                height: 10,
-                angle: -1.55 * 1.5
-            },
-            {
-                x: 0,
-                y: -this.r / 2,
-                width: 30,
-                height: 10,
-                angle: -1.55 / 2
-            },
-            {
-                x: 0,
-                y: -this.r / 2,
-                width: 30,
-                height: 10,
-                angle: 0
-            },
-            {
-                x: 0,
-                y: -this.r / 2,
-                width: 30,
-                height: 10,
-                angle: 1.55 / 2
-            },
-            {
-                x: 0,
-                y: -this.r / 2,
-                width: 30,
-                height: 10,
-                angle: 1.55
-            },
-            {
-                x: 0,
-                y: -this.r / 2,
-                width: 30,
-                height: 10,
-                angle: 1.55 * 1.5
-            },
-            {
-                x: 0,
-                y: -this.r / 2,
-                width: 30,
-                height: 10,
-                angle: Math.PI
-            }
-        ]
+            x: 0,
+            y: -this.r / 2,
+            width: 30,
+            height: 10,
+            angle: -1.55
+        },
+        {
+            x: 0,
+            y: -this.r / 2,
+            width: 30,
+            height: 10,
+            angle: -1.55 * 1.5
+        },
+        {
+            x: 0,
+            y: -this.r / 2,
+            width: 30,
+            height: 10,
+            angle: -1.55 / 2
+        },
+        {
+            x: 0,
+            y: -this.r / 2,
+            width: 30,
+            height: 10,
+            angle: 0
+        },
+        {
+            x: 0,
+            y: -this.r / 2,
+            width: 30,
+            height: 10,
+            angle: 1.55 / 2
+        },
+        {
+            x: 0,
+            y: -this.r / 2,
+            width: 30,
+            height: 10,
+            angle: 1.55
+        },
+        {
+            x: 0,
+            y: -this.r / 2,
+            width: 30,
+            height: 10,
+            angle: 1.55 * 1.5
+        },
+        {
+            x: 0,
+            y: -this.r / 2,
+            width: 30,
+            height: 10,
+            angle: Math.PI
+        }].map(i => {i.r = r; return i});
     } else if (type == 'tripleshot') {
-        this.bulletR = 7;
+        let r = 7;
         this.guns = [{
-                x: 0,
-                y: -this.r + 1,
-                width: 20,
-                height: 8,
-                angle: -.5
-            },
-            {
-                x: 0,
-                y: this.r / 2 - 5,
-                width: 20,
-                height: 8,
-                angle: .5
-            },
-            {
-                x: 0,
-                y: -this.r / 2,
-                width: 25,
-                height: 8,
-                angle: 0
-            },
-        ]
+            x: 0,
+            y: -this.r + 1,
+            width: 20,
+            height: 8,
+            angle: -.5
+        },
+        {
+            x: 0,
+            y: this.r / 2 - 5,
+            width: 20,
+            height: 8,
+            angle: .5
+        },
+        {
+            x: 0,
+            y: -this.r / 2,
+            width: 25,
+            height: 8,
+            angle: 0
+        }].map(i => {i.r = r; return i});
     } else if (type == 'twinHawk') {
-        this.bulletR = 7;
+        let r = 7;
         this.guns = [{
-                x: 0,
-                y: -this.r,
-                width: 25,
-                height: 10,
-                angle: Math.PI // 180 deg
-            },
-            {
-                x: 0,
-                y: 0,
-                width: 25,
-                height: 10,
-                angle: Math.PI // 180 deg
-            },
-            {
-                x: 0,
-                y: -this.r,
-                width: 25,
-                height: 10,
-                angle: 0
-            },
-            {
-                x: 0,
-                y: 0,
-                width: 25,
-                height: 10,
-                angle: 0
-            },
-        ]
+            x: 0,
+            y: -this.r,
+            width: 25,
+            height: 10,
+            angle: Math.PI // 180 deg
+        },
+        {
+            x: 0,
+            y: 0,
+            width: 25,
+            height: 10,
+            angle: Math.PI // 180 deg
+        },
+        {
+            x: 0,
+            y: -this.r,
+            width: 25,
+            height: 10,
+            angle: 0
+        },
+        {
+            x: 0,
+            y: 0,
+            width: 25,
+            height: 10,
+            angle: 0
+        }].map(i => {i.r = r; return i});
     } else if (type == 'triple') {
         let h = 6;
+        let r = 6;
         this.guns = [{
-                x: 0,
-                y: -h - 3,
-                width: 25,
-                height: h,
-                angle: 0
-            },
-            {
-                x: 0,
-                y: -3,
-                width: 25,
-                height: h,
-                angle: 0
-            },
-            {
-                x: 0,
-                y: h - 3,
-                width: 25,
-                height: h,
-                angle: 0
-            },
-        ]
+            x: 0,
+            y: -h - 3,
+            width: 25,
+            height: h,
+            angle: 0
+        },
+        {
+            x: 0,
+            y: -3,
+            width: 25,
+            height: h,
+            angle: 0
+        },
+        {
+            x: 0,
+            y: h - 3,
+            width: 25,
+            height: h,
+            angle: 0
+        }].map(i => {i.r = r; return i});
     } else if (type == 'pentashot') {
-        this.bulletR = 7;
+        let r = 7;
         this.guns = [{
-                x: 0,
-                y: -this.r + 1,
-                width: 20,
-                height: 8,
-                angle: -.35
-            },
-            {
-                x: 0,
-                y: this.r / 2 - 5,
-                width: 20,
-                height: 8,
-                angle: .35
-            },
-            {
-                x: 0,
-                y: -this.r / 2,
-                width: 22,
-                height: 8,
-                angle: .2
-            },
-            {
-                x: 0,
-                y: -this.r / 2,
-                width: 22,
-                height: 8,
-                angle: -.2
-            },
-            {
-                x: 0,
-                y: -this.r / 2,
-                width: 25,
-                height: 8,
-                angle: 0
-            },
-        ]
+            x: 0,
+            y: -this.r + 1,
+            width: 20,
+            height: 8,
+            angle: -.35
+        },
+        {
+            x: 0,
+            y: this.r / 2 - 5,
+            width: 20,
+            height: 8,
+            angle: .35
+        },
+        {
+            x: 0,
+            y: -this.r / 2,
+            width: 22,
+            height: 8,
+            angle: .2
+        },
+        {
+            x: 0,
+            y: -this.r / 2,
+            width: 22,
+            height: 8,
+            angle: -.2
+        },
+        {
+            x: 0,
+            y: -this.r / 2,
+            width: 25,
+            height: 8,
+            angle: 0
+        }].map(i => {i.r = r; return i});
     } else if (type == "flankguard") {// body dimigov elnoxy
-        this.bulletR = 4;
+        let r = 4;
         this.bulletSpeed += .4;
         this.bulletDamage += .5;
         this.spread = [-.3, .3];
@@ -446,9 +441,9 @@ module.exports = function (type = 'default', obj) {
             width: 25,
             height: 10,
             angle: Math.PI,
-        }]
+        }].map(i => {i.r = r; return i});
     } else if (type == "tri_angle") {//
-        this.bulletR = 4;
+        let r = 4;
         this.bulletSpeed += .4;
         this.bulletDamage += .5;
         this.spread = [-.3, .3];
@@ -470,9 +465,9 @@ module.exports = function (type = 'default', obj) {
             width: 23,
             height: 10,
             angle: -2.6,
-        },]
+        },].map(i => {i.r = r; return i});
     } else if (type == "booster") {//
-        this.bulletR = 4;
+        let r = 4;
         this.bulletSpeed += .4;
         this.bulletDamage += .5;
         this.spread = [-.3, .3];
@@ -507,9 +502,9 @@ module.exports = function (type = 'default', obj) {
             width: 23,
             height: 10,
             angle: 2.6,
-        },]
+        },].map(i => {i.r = r; return i});
     } else if (type == "fighter") {//
-        this.bulletR = 4;
+        let r = 4;
         this.bulletSpeed += .4;
         this.bulletDamage += .5;
         this.spread = [-.3, .3];
@@ -544,7 +539,7 @@ module.exports = function (type = 'default', obj) {
             width: 23,
             height: 10,
             angle: 2.6,
-        },]
+        },].map(i => {i.r = r; return i});
     }else return;
     this.className = type;
     this.classPath.push(type);
