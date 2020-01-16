@@ -58,63 +58,72 @@ global.updateScore = function (obj, cellType) {
 
 module.exports = {
     bulletCollision (obj, cells) {
-        for (let j of obj.bullets) {
-            for (let i of cells) {
-                if (i.dead) return;
-                if (CircularCollision(j, i)) {
-                    j.health -= i.bodyDamage + obj.penetration;
-                    if (j.health <= 0) {
-                        obj.bullets.splice(obj.bullets.indexOf(j), 1);
+        for (let i = 0, len = obj.bullets.length; i < len; i++) {
+            let bullet = obj.bullets[i];
+            // for (let j = 0, len = cells.length;  j < len; j++) {
+            for (let j in cells) {
+                let cell = cells[j];
+                if (cell.dead) return;
+                if (CircularCollision(bullet, cell)) {
+                    bullet.health -= cell.bodyDamage + obj.penetration;
+                    if (bullet.health <= 0) {
+                        obj.bullets.splice(obj.bullets.indexOf(bullet), 1);
                     }
-                    i.health -= obj.bulletDamage;
-                    if (i.health <= 0) {
-                        i.dead = true;
-                        setTimeout(() => {
-                            cells.push(Geometry.prototype.createCell());
-                        }, 3000);
-                        updateScore(obj, i.type);
-                        return;
+                    cell.health -= obj.bulletDamage;
+                    if (cell.health <= 0) {
+                        cell.dead = true;
+                        if (cells.length) {
+                            setTimeout(() => {
+                                cells.push(Geometry.prototype.createCell());
+                            }, 3000);
+                            updateScore(obj, cell.type);
+                            return;
+                        }
                     }
-                    else i.lastDamaged = now;
+                    else cell.lastDamaged = now;
                     let vx, vy;
-                    if (j.speedX < 0) {
+                    if (bullet.speedX < 0) {
                         vx = -1;
                     }
-                    else if (j.speedX > 0) {
+                    else if (bullet.speedX > 0) {
                         vx = 1;
                     }
-                    if (j.speedY < 0) {
+                    if (bullet.speedY < 0) {
                         vy = -1;
                     }
-                    else if (j.speedY > 0) {
+                    else if (bullet.speedY > 0) {
                         vy = 1;
                     }
-                    i.vx = 2 * vx|0;
-                    i.vy = 2 * vy|0;
-                    i.x += i.vx;
-                    i.y += i.vy;
+                    cell.vx = 2 * vx|0;
+                    cell.vy = 2 * vy|0;
+                    cell.x += cell.vx;
+                    cell.y += cell.vy;
                 }
             }
         }
     },
     bodyCollision (obj, cells) {
-        for (let i of cells) {
-            if (i.dead) return;
-            if (CircularCollision(obj, i))  {
-                obj.health -= i.bodyDamage;
+        // for (let i = 0, len = cells.length;  i < len; i++) {
+        for (let i in cells) {
+            let cell = cells[i];
+            if (cell.dead) return;
+            if (CircularCollision(obj, cell))  {
+                obj.health -= cell.bodyDamage;
                 if (obj.health <= 0)
                     obj.dead = true;
                 else obj.lastDamaged = now;
-                i.health -= obj.bodyDamage;
-                if (i.health <= 0) {
-                    i.dead = true;
-                    setTimeout(() => {
-                        cells.push(Geometry.prototype.createCell());
-                    }, 1000);
-                    updateScore(obj, i.type);
-                    return;
+                cell.health -= obj.bodyDamage;
+                if (cell.health <= 0) {
+                    cell.dead = true;
+                    if (cells.length) {
+                        setTimeout(() => {
+                            cells.push(Geometry.prototype.createCell());
+                        }, 3000);
+                        updateScore(obj, cell.type);
+                        return;
+                    }
                 }
-                else i.lastDamaged = now;
+                else cell.lastDamaged = now;
                 let vx, vy;
                 if (obj.moveButtons.left === true) {
                     vx = -1;
@@ -128,12 +137,12 @@ module.exports = {
                 else if (obj.moveButtons.down === true) {
                     vy = 1;
                 }
-                i.vx = 5 * vx|0;
-                i.vy = 5 * vy|0;
-                i.x += i.vx;
-                i.y += i.vy;
-                obj.x -= i.vx*1.2;
-                obj.y -= i.vy*1.2;
+                cell.vx = 5 * vx|0;
+                cell.vy = 5 * vy|0;
+                cell.x += cell.vx;
+                cell.y += cell.vy;
+                obj.x -= cell.vx*1.2;
+                obj.y -= cell.vy*1.2;
             }
         }
     }

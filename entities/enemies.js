@@ -56,6 +56,8 @@ module.exports = function (t) {
     for (let j = 0; j < enemies.length; j++) {
         // if (isNight) {            
             enemies[j].attack();
+            collision.bulletCollision(enemies[j], players);
+            collision.bodyCollision(enemies[j], players);
         // }
         if (enemies[j].lastShootTime + enemies[j].reloadDelay < now) {
             enemies[j].shoot();
