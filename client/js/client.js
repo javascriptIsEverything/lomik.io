@@ -13,6 +13,8 @@ sock.on('updateEnemies', function (obj) {
     enemies = obj;
 })
 
+
+
 sock.on('update', function (obj) {
     if (obj.objects) {
         for (let i in obj.objects) {

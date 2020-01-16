@@ -20,9 +20,16 @@ global.Geometry = require('./geometry');
 global.collision = require('./collision');
 global.Tank = require('./tank');
 global.classes = require('./classes');
+
 let entities = require('./entities');
 let io = socketio(server);
 
+let fortresst = {
+    side: 50,
+    health: 10,
+    x: Math.sqrt(4)*(600 - 50)/Math.pow(2,2),
+    y: Math.sqrt(4)*(600 - 50)/Math.pow(2,2),
+}
 io.on('connection', sock => {
     clients[sock.id] = sock;
     players[sock.id] = new Tank(
@@ -62,7 +69,7 @@ io.on('connection', sock => {
 
             io.emit('update', {objects: {
                 players: updatedPlayers,
-                cells, enemies, isNight
+                cells, enemies, isNight,fortresst,
             }});
         }, 1000/60);
     }
