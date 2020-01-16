@@ -33,6 +33,10 @@ global.updateScore = function (obj, cellType) {
         case 'pentagon':
             score = 130;
             break;
+        case 'hexagon':
+        case 'enemy':
+            score = 250;
+            break;
     }
     obj.score += score;
 

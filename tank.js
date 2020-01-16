@@ -119,6 +119,30 @@ module.exports = class Tank {
             return true;
         }
     }
+    shoot () {
+        let guns = this.guns;
+
+        for (let j = 0, len = guns.length; j < len; j++) {
+            let i = guns[j];
+            let angle = this.angle + i.angle;
+            let speedX = Math.cos(angle) * this.bulletSpeed + random(this.spread[0], this.spread[1]);
+            let speedY = Math.sin(angle) * this.bulletSpeed + random(this.spread[0], this.spread[1]);
+            this.bullets.push({
+                aliveUntil: now + this.bulletLifeTime,
+                health: this.penetration,
+                speedX: +speedX.toFixed(2),
+                speedY: +speedY.toFixed(2),
+                x: +(this.x + i.x + speedX*3).toFixed(2),
+                y: +(this.y + i.y + speedY*3).toFixed(2),
+                r: i.r
+            });
+        }
+        this.canShoot = false;
+        this.x -= Math.cos(this.angle)/.3;
+        this.y -= Math.sin(this.angle)/.3;
+
+        setTimeout(() => this.canShoot = true, this.reloadDelay);
+    }
     get simplify() {
         return {
             id: this.id,

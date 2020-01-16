@@ -18,8 +18,8 @@ global.playersLength = 0;
 // send objects to classes
 global.Geometry = require('./geometry');
 global.collision = require('./collision');
-let Tank = require('./tank');
-let classes = require('./classes');
+global.Tank = require('./tank');
+global.classes = require('./classes');
 let entities = require('./entities');
 let io = socketio(server);
 
@@ -51,6 +51,7 @@ io.on('connection', sock => {
         //         ));
         //     }
         // }, 30000);
+        enemies.push(new Enemy());
         intervalId = setInterval(() => {
             now = Date.now();
             // gets lightweight variant of players object, so you can update it easier
@@ -76,6 +77,7 @@ io.on('connection', sock => {
         if (playersLength === 0) {
             clearInterval(intervalId);
             cells = [];
+            enemies = [];
         }
     });
 
@@ -112,27 +114,7 @@ io.on('connection', sock => {
     sock.on('shoot', function () {
         let player = players[sock.id];
         if (!player.canShoot) return;
-        let guns = player.guns;
-
-        for (let j = 0, len = guns.length; j < len; j++) {
-            let i = guns[j];
-            let speedX = Math.cos(player.angle + i.angle) * player.bulletSpeed + random(player.spread[0], player.spread[1]);
-            let speedY = Math.sin(player.angle + i.angle) * player.bulletSpeed + random(player.spread[0], player.spread[1]);
-            player.bullets.push({
-                aliveUntil: now + player.bulletLifeTime,
-                health: player.penetration,
-                speedX: +speedX.toFixed(2),
-                speedY: +speedY.toFixed(2),
-                x: +(player.x + i.x + speedX*3).toFixed(2),
-                y: +(player.y + i.y + speedY*3).toFixed(2),
-                r: i.r
-            });
-        }
-        player.canShoot = false;
-        player.x -= Math.cos(player.angle)/.3;
-        player.y -= Math.sin(player.angle)/.3;
-
-        setTimeout(() => player.canShoot = true, player.reloadDelay);
+        player.shoot();
     });
 
     sock.on('update', function (obj) {
@@ -191,5 +173,5 @@ io.on('connection', sock => {
 app.use(express.static(__dirname+'/client'));
 server.listen(8080, () => {
     console.log('Lomik.io running at 8080.');
-    console.log('chi krage. banm era');
+    console.log('sarkel dxyaki kyanqer0. Collision fayli mej sarkel taza stugox fukncia, vor0 kancni twnamineri patronneri vrayov. Hin funkciain cer ttal9');
 });

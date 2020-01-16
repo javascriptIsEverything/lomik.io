@@ -109,7 +109,6 @@ sock.on('update', function (obj) {
                         }
                     }
                 }
-                return;
             }
             mousedown = true;
             Tank.prototype.shoot(players[sock.id], e);
