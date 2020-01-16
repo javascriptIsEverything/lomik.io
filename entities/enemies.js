@@ -49,6 +49,7 @@ global.Enemy = class extends Tank {
         this.x += ~~vx;
         this.y += ~~vy;
     }
+    
 }
 
 module.exports = function (t) {

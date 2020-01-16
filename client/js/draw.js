@@ -232,36 +232,30 @@ let cells = [];
 let draw = Tank.prototype.draw;
 let shoot = Tank.prototype.shoot;
 
-let fortress = {
-    side : 50,
-    x : cw/2,
-    y : ch/2,
-    health: 100,
-    DrawFortress() {
-        ctx.beginPath
-        ctx.moveTo(this.x,this.y);
-        ctx.lineTo(this.x , this.y - this.side/2);
-        ctx.lineTo(this.x + this.side/4, this.y);
-        ctx.lineTo(this.x + this.side*2/4, this.y - this.side/2);
-        ctx.lineTo(this.x + this.side*3/4, this.y);
-        ctx.lineTo(this.x + this.side, this.y - this.side/2);
-        ctx.lineTo(this.x + this.side ,this.y);
-        ctx.lineTo(this.x + this.side ,this.y + this.side);
-        ctx.lineTo(this.x ,this.y + this.side);
-        ctx.lineTo(this.x,this.y);
-        ctx.lineTo(this.x + this.side,this.y);
-        ctx.strokeStyle = "purpule";
-        ctx.fill()
-        ctx.stroke()
-        ctx.closePath()
-    }
+function  DrawFortresst() {
+    ctx.beginPath();
+    ctx.moveTo(cw/2,ch/2);
+    ctx.lineTo(fortresst.x,fortresst.y);
+    ctx.lineTo(fortresst.x , fortresst.y - fortresst.side/2);
+    ctx.lineTo(fortresst.x + fortresst.side/4, fortresst.y);
+    ctx.lineTo(fortresst.x + fortresst.side*2/4, fortresst.y - fortresst.side/2);
+    ctx.lineTo(fortresst.x + fortresst.side*3/4, fortresst.y);
+    ctx.lineTo(fortresst.x + fortresst.side, fortresst.y - fortresst.side/2);
+    ctx.lineTo(fortresst.x + fortresst.side ,fortresst.y);
+    ctx.lineTo(fortresst.x + fortresst.side ,fortresst.y + fortresst.side);
+    ctx.lineTo(fortresst.x ,fortresst.y + fortresst.side);
+    ctx.lineTo(fortresst.x,fortresst.y);
+    ctx.lineTo(fortresst.x + fortresst.side,fortresst.y);
+    ctx.strokeStyle = "purpule";
+    ctx.fill()
+    ctx.stroke()
+    ctx.closePath()
 }
-
 
 
 function game () {
     scene.clear();
-    fortress.DrawFortress();
+    DrawFortresst();
     for (let i in players) {
         let player = players[i];
         drawHealth(player);
