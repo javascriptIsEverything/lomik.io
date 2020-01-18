@@ -3,57 +3,47 @@ module.exports = class Geometry {
         this.w = 15;
         this.h = 15;
         this.r = 7.5;
-        if (type === 'attacker') {
-            this.w = 10;
-            this.h = 10;
-            this.x = random(this.w+600/2-50, 600/2+50-this.w);
-            this.y = random(this.h+600/2-50, 600/2+50-this.h);
-            this.defaultX = this.x;
-            this.defaultY = this.y;
-        }
-        else if (type === 'hexagon') {
-            this.w = 40;
-            this.h = 40;
-            this.x = random(this.w+600/2-150, 600/2+150-this.w);
-            this.y = random(this.h+600/2-150, 600/2+150-this.h);
-        }
-        else if (type === 'pentagon') {
-            this.w = 25;
-            this.h = 25;
-            this.x = random(this.w+600/2-150, 600/2+150-this.w);
-            this.y = random(this.h+600/2-150, 600/2+150-this.h);
-        }
-        else {
-            this.x = random(this.w, 600-this.w),
-            this.y = random(this.h, 600-this.h);
+        switch (type) {
+            case 'square':
+                this.maxHealth = 4;
+                this.bodyDamage = 1;
+                break;
+            case 'triangle':
+                this.maxHealth = 13;
+                this.bodyDamage = 1.5;
+                break;
+            case 'attacker':
+                this.r = 10;
+                this.x = random(this.r+600/2-50, 600/2+50-this.r);
+                this.y = random(this.r+600/2-50, 600/2+50-this.r);
+                this.defaultX = this.x;
+                this.defaultY = this.y;
+                this.maxHealth = 13;
+                this.bodyDamage = 1.5;
+                break;
+            case 'hexagon':
+                this.r = 40;
+                this.x = random(this.r+600/2-150, 600/2+150-this.r);
+                this.y = random(this.r+600/2-150, 600/2+150-this.r);
+                this.maxHealth = 42;
+                this.bodyDamage = 8.5;
+                break;
+            case 'pentagon':
+                this.r = 25;
+                this.x = random(this.r+600/2-150, 600/2+150-this.r);
+                this.y = random(this.r+600/2-150, 600/2+150-this.r);
+                this.maxHealth = 65;
+                this.bodyDamage = 8;
+                break;
+            default:
+                this.x = random(this.r, 600-this.r);
+                this.y = random(this.r, 600-this.r);
+                break;
         }
         this.cell = null;
-        if (type == 'square') {
-            this.maxHealth = 4;
-            this.bodyDamage = 1;
-        }
-        else if (type == 'triangle') {
-            this.maxHealth = 13;
-            this.bodyDamage = 1.5;
-        }
-        else if (type == 'attacker') {
-            this.maxHealth = 13;
-            this.bodyDamage = 1.5;
-        }
-        else if (type == 'pentagon') {
-            this.maxHealth = 65;
-            this.bodyDamage = 8;
-        }
-        else if (type == 'hexagon') {
-            this.maxHealth = 42;
-            this.bodyDamage = 8.5;
-        }
         this.health = this.maxHealth;
         this.lastDamaged = 0;
         this.regeneration = {
-            timer: null,
-            started: false,
-            waiting: false,
             speed: .02,
             delay: 3000,
         }

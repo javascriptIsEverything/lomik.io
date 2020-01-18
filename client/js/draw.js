@@ -232,37 +232,46 @@ let cells = [];
 let draw = Tank.prototype.draw;
 let shoot = Tank.prototype.shoot;
 
-function  DrawFortresst() {
-    ctx.beginPath();
-    ctx.moveTo(cw/2,ch/2);
-    ctx.lineTo(fortresst.x,fortresst.y);
-    ctx.lineTo(fortresst.x , fortresst.y - fortresst.side/2);
-    ctx.lineTo(fortresst.x + fortresst.side/4, fortresst.y);
-    ctx.lineTo(fortresst.x + fortresst.side*2/4, fortresst.y - fortresst.side/2);
-    ctx.lineTo(fortresst.x + fortresst.side*3/4, fortresst.y);
-    ctx.lineTo(fortresst.x + fortresst.side, fortresst.y - fortresst.side/2);
-    ctx.lineTo(fortresst.x + fortresst.side ,fortresst.y);
-    ctx.lineTo(fortresst.x + fortresst.side ,fortresst.y + fortresst.side);
-    ctx.lineTo(fortresst.x ,fortresst.y + fortresst.side);
-    ctx.lineTo(fortresst.x,fortresst.y);
-    ctx.lineTo(fortresst.x + fortresst.side,fortresst.y);
-    ctx.strokeStyle = "purpule";
-    ctx.fill()
-    ctx.stroke()
-    ctx.closePath()
+function drawCastle() {
+    with(ctx) {
+        with (castle) {
+            beginPath();
+            moveTo(cw/2,ch/2);
+            lineTo(x,y);
+            lineTo(x , y - side/2);
+            lineTo(x + side/4, y);
+            lineTo(x + side*2/4, y - side/2);
+            lineTo(x + side*3/4, y);
+            lineTo(x + side, y - side/2);
+            lineTo(x + side ,y);
+            lineTo(x + side ,y + side);
+            lineTo(x ,y + side);
+            lineTo(x,y);
+            lineTo(x + side,y);
+            strokeStyle = "purpule";
+            fill();
+            stroke();
+            closePath();
+        }
+    }
+    // if (castle.health < castle.maxHealth) {
+        drawHealth(castle);
+    // }
 }
 
 
 function game () {
     scene.clear();
-    DrawFortresst();
+    drawHealth(castle);
+    drawCastle();
     for (let i in players) {
         let player = players[i];
         drawHealth(player);
         draw(player);
     }
     for (let i = 0; i < enemies.length; i++) {
-        draw(enemies[i])
+        drawHealth(enemies[i]);
+        draw(enemies[i]);
     }
     ctx.font = "40px serif";
     ctx.fillText("Array.filter[]", 200, 40);
@@ -291,5 +300,4 @@ function game () {
     scene.drawMiniMap(player.x, player.y);
 
     requestAnimationFrame(game);
-    
 }

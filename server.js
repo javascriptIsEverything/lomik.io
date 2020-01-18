@@ -24,11 +24,15 @@ global.classes = require('./classes');
 let entities = require('./entities');
 let io = socketio(server);
 
-let fortresst = {
+global.castle = {
     side: 50,
-    health: 10,
-    x: Math.sqrt(4)*(600 - 50)/Math.pow(2,2),
-    y: Math.sqrt(4)*(600 - 50)/Math.pow(2,2),
+    health: 50,
+    maxHealth: 100,
+    bodyDamage: 3,
+    w: 50,
+    h: 50,
+    x: 300 - 25,
+    y: 300 - 25,
 }
 io.on('connection', sock => {
     clients[sock.id] = sock;
@@ -66,10 +70,11 @@ io.on('connection', sock => {
             // enemies
             entities.checkEnemies(t);
             entities.checkCells();
+            collision.castleCollision();
 
             io.emit('update', {objects: {
                 players: updatedPlayers,
-                cells, enemies, isNight,fortresst,
+                cells, enemies, isNight, castle,
             }});
         }, 1000/60);
     }
@@ -92,7 +97,6 @@ io.on('connection', sock => {
         let player = players[sock.id];
         if (!player || !obj) return;
         player.angle = obj.angle|0;
-        // io.emit('update', {id: sock.id, property: 'angle', value: obj.angle});
     });
 
     sock.on('score', function () {

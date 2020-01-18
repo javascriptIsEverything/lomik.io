@@ -145,5 +145,39 @@ module.exports = {
                 obj.y -= cell.vy*1.2;
             }
         }
+    },
+    castleCollision () {
+        for (let i = 0, len = enemies.length; i < len; i++) {
+            let enemy = enemies[i];
+            
+            if (RectCircleColliding(enemy, castle))  {
+                castle.health -= enemy.bodyDamage;
+                if (castle.health <= 0)
+                    castle.dead = true;
+                else castle.lastDamaged = now;
+                enemy.health -= castle.bodyDamage;
+                if (enemy.health <= 0) {
+                    enemy.dead = true;
+                }
+                else enemy.lastDamaged = now;
+            }
+            for (let j = 0, len = enemy.bullets.length; j < len; j++) {
+                let bullet = enemy.bullets[j];
+                
+                if (RectCircleColliding(bullet, castle))  {
+                    castle.health -= enemy.bulletDamage + enemy.penetration;
+                    if (bullet.health <= 0) {
+                        enemy.bullets.splice(enemy.bullets.indexOf(bullet), 1);
+                    }
+                    if (castle.health <= 0)
+                        castle.dead = true;
+                    else castle.lastDamaged = now;
+                    bullet.health -= castle.bodyDamage;
+                    if (bullet.health <= 0) {
+                        bullet.dead = true;
+                    }
+                }
+            }
+        }
     }
 }
