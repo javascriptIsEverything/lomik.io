@@ -1,19 +1,21 @@
 module.exports = class Geometry {
     constructor (type) {
-        this.w = 15;
-        this.h = 15;
         this.r = 7.5;
         switch (type) {
             case 'square':
+                this.x = random(this.r, 600-this.r);
+                this.y = random(this.r, 600-this.r);
                 this.maxHealth = 4;
                 this.bodyDamage = 1;
                 break;
             case 'triangle':
+                this.x = random(this.r, 600-this.r);
+                this.y = random(this.r, 600-this.r);
                 this.maxHealth = 13;
                 this.bodyDamage = 1.5;
                 break;
             case 'attacker':
-                this.r = 10;
+                this.r = 4;
                 this.x = random(this.r+600/2-50, 600/2+50-this.r);
                 this.y = random(this.r+600/2-50, 600/2+50-this.r);
                 this.defaultX = this.x;
@@ -22,22 +24,20 @@ module.exports = class Geometry {
                 this.bodyDamage = 1.5;
                 break;
             case 'hexagon':
-                this.r = 40;
+                this.r = 20;
                 this.x = random(this.r+600/2-150, 600/2+150-this.r);
                 this.y = random(this.r+600/2-150, 600/2+150-this.r);
                 this.maxHealth = 42;
                 this.bodyDamage = 8.5;
                 break;
             case 'pentagon':
-                this.r = 25;
+                this.r = 10;
                 this.x = random(this.r+600/2-150, 600/2+150-this.r);
                 this.y = random(this.r+600/2-150, 600/2+150-this.r);
                 this.maxHealth = 65;
                 this.bodyDamage = 8;
                 break;
             default:
-                this.x = random(this.r, 600-this.r);
-                this.y = random(this.r, 600-this.r);
                 break;
         }
         this.cell = null;

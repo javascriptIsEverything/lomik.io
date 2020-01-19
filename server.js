@@ -66,16 +66,19 @@ io.on('connection', sock => {
         intervalId = setInterval(() => {
             now = Date.now();
             // gets lightweight variant of players object, so you can update it easier
-            let updatedPlayers = entities.checkPlayers();
-            // enemies
-            entities.checkEnemies(t);
-            entities.checkCells();
-            collision.castleCollision();
-
-            io.emit('update', {objects: {
-                players: updatedPlayers,
-                cells, enemies, isNight, castle,
-            }});
+            let updatedPlayers;
+            try {
+                updatedPlayers = entities.checkPlayers();
+                // enemies
+                entities.checkEnemies(t);
+                entities.checkCells();
+                collision.castleCollision();
+                io.emit('update', {objects: {
+                    players: updatedPlayers,
+                    cells, enemies, isNight, castle,
+                }});
+            }
+            catch (err) {}
         }, 1000/60);
     }
     // console.log(`${sock.id} connected!`);

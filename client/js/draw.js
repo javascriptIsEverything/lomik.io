@@ -121,8 +121,6 @@ class Geometry {
             ctx.lineTo(obj.r,-obj.r);
             ctx.lineTo(-obj.r,-obj.r);
             ctx.fillStyle = 'rgb(255, 232, 105)';
-            if (!scale)
-                ctx.stroke();
             ctx.fill();
             ctx.closePath();
         }
@@ -130,10 +128,10 @@ class Geometry {
             ctx.beginPath();
             ctx.strokeWidth = 4;
             ctx.fillStyle = 'red';
-            ctx.moveTo(-obj.w/2, -obj.h/2);
-            ctx.lineTo(obj.w, -obj.h/2);
-            ctx.lineTo(obj.w/2-4, obj.h-2);
-            ctx.lineTo(-obj.w/2, -obj.h/2);
+            ctx.moveTo(-obj.r, -obj.r);
+            ctx.lineTo(obj.r*2, -obj.r);
+            ctx.lineTo(obj.r-4, obj.r*2-2);
+            ctx.lineTo(-obj.r, -obj.r);
             ctx.fill();
             // ctx.fillStyle = '#000';
             ctx.closePath();
@@ -142,12 +140,12 @@ class Geometry {
             ctx.beginPath();
             ctx.strokeWidth = 4;
             ctx.fillStyle = 'rgb(118, 141, 252)';
-            var a = Math.PI * 2/5;
-            ctx.moveTo(obj.w, 0);
-            for (var i = 1; i < 5; i++) {
-                ctx.lineTo(obj.w * Math.cos(a*i), obj.w * Math.sin(a*i));
+            let a = Math.PI * 2/5;
+            ctx.moveTo(obj.r*2, 0);
+            for (let i = 1; i < 5; i++) {
+                ctx.lineTo(obj.r*2 * Math.cos(a*i), obj.r*2 * Math.sin(a*i));
             }
-            ctx.lineTo(obj.w, 0)
+            ctx.lineTo(obj.r*2, 0)
             // ctx.lineTo(-obj.w/2, -obj.h/2);
             ctx.fill();
             ctx.fillStyle = '#000';
@@ -157,14 +155,14 @@ class Geometry {
             ctx.beginPath();
             ctx.strokeWidth = 4;
             ctx.fillStyle = '#000';
-            var a = Math.PI * 2/5;
-            ctx.moveTo(0, -obj.h/2-2);
-            ctx.lineTo(obj.w/2, -obj.h/3.5);
-            ctx.lineTo(obj.w/2, obj.h/3.5);
-            ctx.lineTo(0, obj.h/2+2);
-            ctx.lineTo(-obj.w/2, obj.h/3.5);
-            ctx.lineTo(-obj.w/2, -obj.h/3.5);
-            ctx.lineTo(0, -obj.h/2-2);
+            let a = Math.PI * 2/5;
+            ctx.moveTo(0, -obj.r-2);
+            ctx.lineTo(obj.r, -obj.r*2/3.5);
+            ctx.lineTo(obj.r, obj.r*2/3.5);
+            ctx.lineTo(0, obj.r+2);
+            ctx.lineTo(-obj.r, obj.r*2/3.5);
+            ctx.lineTo(-obj.r, -obj.r*2/3.5);
+            ctx.lineTo(0, -obj.r-2);
             // let a = 100,
             //     x = 100,
             //     y = 0;
@@ -185,10 +183,10 @@ class Geometry {
             ctx.beginPath();
             ctx.strokeWidth = 4;
             ctx.fillStyle = 'rgb(252, 118, 119)';
-            ctx.moveTo(-obj.w/2, -obj.h/2);
-            ctx.lineTo(obj.w, obj.h/2-2);
-            ctx.lineTo(-obj.w/2, obj.h);
-            ctx.lineTo(-obj.w/2, -obj.h/2);
+            ctx.moveTo(-obj.r, -obj.r);
+            ctx.lineTo(obj.r*2, obj.r-2);
+            ctx.lineTo(-obj.r, obj.r*2);
+            ctx.lineTo(-obj.r, -obj.r);
             ctx.fill();
             ctx.fillStyle = '#000';
             ctx.closePath();
@@ -259,8 +257,10 @@ function drawCastle() {
     // }
 }
 
+let paused = false;
 
 function game () {
+    if (paused) return;
     scene.clear();
     drawHealth(castle);
     drawCastle();

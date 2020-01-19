@@ -33,21 +33,51 @@ global.Enemy = class extends Tank {
         return player;
     }
     attack () {
-        if (!this.cell) this.cell = this.closestPlayer;
+        let isAtTheSamePlace = false;
+        if (!this.cell)
+            this.cell = this.closestPlayer;
         if (!this.cell) {
-            this.angle = -Math.atan2(this.y - 300, -(this.x - 300));
+            if (this.x > 600/2-100 && this.x < 600/2+100
+                && this.y > 600/2-100 && this.y < 600/2+100)
+            {
+                this.angle = -Math.atan2(this.y - 300, -(this.x - 300));
+                return;
+            }
+            let x, y;
+            if (this.x < 300) x = this.x - 250;
+            else x = this.x - 350;
+
+            if (this.y < 300) y = this.y - 250;
+            else y = this.y - 350;
+
+            this.angle = -Math.atan2(y, -x);
         }
         else {
             let distanceX = this.x - this.cell.x;
             let distanceY = this.y - this.cell.y;
-            if (Math.abs(distanceX) > 150 || Math.abs(distanceY) > 150)
-            this.angle = -Math.atan2(this.y - 300, -(this.x - 300));
+            if (Math.abs(distanceX) > 150 || Math.abs(distanceY) > 150) {
+                if (this.x > 600/2-100 && this.x < 600/2+100
+                    && this.y > 600/2-100 && this.y < 600/2+100)
+                {
+                    this.angle = -Math.atan2(this.y - 300, -(this.x - 300));
+                    return;
+                }
+                let x, y;
+                if (this.x < 300) x = this.x - 250;
+                else x = this.x - 350;
+                
+                if (this.y < 300) y = this.y - 250;
+                else y = this.y - 350;
+
+                this.angle = -Math.atan2(y, -x);
+                // this.angle = -Math.atan2(this.y - 300, -(this.x - 300));
+            }
             else this.angle = -Math.atan2(distanceY, -distanceX);
         }
         let vx = Math.cos(this.angle)*1.5;
         let vy = Math.sin(this.angle)*1.5;
-        this.x += ~~vx;
-        this.y += ~~vy;
+        this.x += ~~vx|0;
+        this.y += ~~vy|0;
     }
     
 }

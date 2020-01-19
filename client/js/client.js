@@ -121,64 +121,13 @@ sock.on('update', function (obj) {
         canvas.addEventListener('keydown', e => Tank.prototype.moveHandler(players[sock.id], e));
         canvas.addEventListener('keyup', e => Tank.prototype.moveHandler(players[sock.id], e));
         canvas.addEventListener('keypress', e => Tank.prototype.keyHandler(players[sock.id], e));
-
         requestAnimationFrame(game);
+        window.addEventListener('blur', () => paused = true);
+        window.addEventListener('focus', () => {
+            paused = false;
+            requestAnimationFrame(game);
+        });
     };
 
     setTimeout(initServerTimeoutlId, 200);
 })();
-
-// var suite = new Benchmark.Suite;
-
-// // add tests
-// suite.add('with', function() {
-//     with(ctx) {
-//         with (fortresst) {
-//             beginPath();
-//             moveTo(cw/2,ch/2);
-//             lineTo(x,y);
-//             lineTo(x , y - side/2);
-//             lineTo(x + side/4, y);
-//             lineTo(x + side*2/4, y - side/2);
-//             lineTo(x + side*3/4, y);
-//             lineTo(x + side, y - side/2);
-//             lineTo(x + side ,y);
-//             lineTo(x + side ,y + side);
-//             lineTo(x ,y + side);
-//             lineTo(x,y);
-//             lineTo(x + side,y);
-//             strokeStyle = "purpule";
-//             fill();
-//             stroke();
-//             closePath();
-//         }
-//     }
-// })
-// .add('ctx', function() {
-//     ctx.beginPath();
-//     ctx.moveTo(cw/2,ch/2);
-//     ctx.lineTo(fortresst.x,fortresst.y);
-//     ctx.lineTo(fortresst.x , fortresst.y - fortresst.side/2);
-//     ctx.lineTo(fortresst.x + fortresst.side/4, fortresst.y);
-//     ctx.lineTo(fortresst.x + fortresst.side*2/4, fortresst.y - fortresst.side/2);
-//     ctx.lineTo(fortresst.x + fortresst.side*3/4, fortresst.y);
-//     ctx.lineTo(fortresst.x + fortresst.side, fortresst.y - fortresst.side/2);
-//     ctx.lineTo(fortresst.x + fortresst.side ,fortresst.y);
-//     ctx.lineTo(fortresst.x + fortresst.side ,fortresst.y + fortresst.side);
-//     ctx.lineTo(fortresst.x ,fortresst.y + fortresst.side);
-//     ctx.lineTo(fortresst.x,fortresst.y);
-//     ctx.lineTo(fortresst.x + fortresst.side,fortresst.y);
-//     ctx.strokeStyle = "purpule";
-//     ctx.fill();
-//     ctx.stroke();
-//     ctx.closePath();
-// })
-// // add listeners
-// .on('cycle', function(event) {
-//     console.log(String(event.target));
-// })
-// .on('complete', function() {
-//     console.log('Fastest is ' + this.filter('fastest').map('name'));
-// })
-// // run async
-// .run({ 'async': true });
