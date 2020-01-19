@@ -1,13 +1,15 @@
-function RectCircleColliding(circle, rect){
-    let distX = Math.abs(circle.x - rect.x);
-    let distY = Math.abs(circle.y - rect.y);
+function RectCircleColliding(circle, rect) {
+    let distX = Math.abs(circle.x - rect.x-rect.r);
+    let distY = Math.abs(circle.y - rect.y-rect.r);
 
-    
-    if (distX+distY < circle.r + rect.h/2) {
-        return true;
-    }
-    let dx = distX;
-    let dy = distY;
+    if (distX > (rect.r + circle.r)) { return false; }
+    if (distY > (rect.r + circle.r)) { return false; }
+
+    if (distX <= (rect.r)) { return true; } 
+    if (distY <= (rect.r)) { return true; }
+
+    let dx = distX-rect.r;
+    let dy = distY-rect.r;
     return (dx**2 + dy**2 <= circle.r**2);
 }
 
@@ -100,6 +102,45 @@ module.exports = {
                     cell.y += cell.vy;
                 }
             }
+            for (let j in enemies) {
+                let enemy = enemies[j];
+                if (enemy.dead) return;
+                if (CircularCollision(bullet, enemy)) {
+                    bullet.health -= enemy.bodyDamage + obj.penetration;
+                    if (bullet.health <= 0) {
+                        obj.bullets.splice(obj.bullets.indexOf(bullet), 1);
+                    }
+                    enemy.health -= obj.bulletDamage;
+                    if (enemy.health <= 0) {
+                        enemies.splice(enemies.indexOf(enemy), 1);
+                        if (enemies.length) {
+                        //     setTimeout(() => {
+                        //         cells.push(Geometry.prototype.createCell());
+                        //     }, 3000);
+                            updateScore(obj, 'enemy');
+                            return;
+                        }
+                    }
+                    else enemy.lastDamaged = now;
+                    let vx, vy;
+                    if (bullet.speedX < 0) {
+                        vx = -1;
+                    }
+                    else if (bullet.speedX > 0) {
+                        vx = 1;
+                    }
+                    if (bullet.speedY < 0) {
+                        vy = -1;
+                    }
+                    else if (bullet.speedY > 0) {
+                        vy = 1;
+                    }
+                    enemy.vx = 2 * vx|0;
+                    enemy.vy = 2 * vy|0;
+                    enemy.x += enemy.vx;
+                    enemy.y += enemy.vy;
+                }
+            }
         }
     },
     bodyCollision (obj, cells) {
@@ -150,7 +191,12 @@ module.exports = {
         for (let i = 0, len = enemies.length; i < len; i++) {
             let enemy = enemies[i];
             
-            if (RectCircleColliding(enemy, castle))  {
+            // if (RectCircleColliding(enemy, castle))  {
+            if (enemy.x + enemy.r > castle.x - castle.side/2
+                && enemy.x - enemy.r < castle.x + castle.side/2
+                && enemy.y + enemy.r > castle.y - castle.side/2
+                && enemy.y - enemy.r < castle.y + castle.side/2)
+            {
                 castle.health -= enemy.bodyDamage;
                 if (castle.health <= 0)
                     castle.dead = true;
@@ -164,17 +210,20 @@ module.exports = {
             for (let j = 0, len = enemy.bullets.length; j < len; j++) {
                 let bullet = enemy.bullets[j];
                 
-                if (RectCircleColliding(bullet, castle))  {
+            // if (RectCircleColliding(bullet, castle))  {
+                if (bullet.x + bullet.r > castle.x - castle.side/2
+                    && bullet.x - bullet.r < castle.x + castle.side/2
+                    && bullet.y + bullet.r > castle.y - castle.side/2
+                    && bullet.y - bullet.r < castle.y + castle.side/2)
+                {
                     castle.health -= enemy.bulletDamage + enemy.penetration;
-                    if (bullet.health <= 0) {
-                        enemy.bullets.splice(enemy.bullets.indexOf(bullet), 1);
-                    }
                     if (castle.health <= 0)
-                        castle.dead = true;
+                    castle.dead = true;
                     else castle.lastDamaged = now;
+
                     bullet.health -= castle.bodyDamage;
                     if (bullet.health <= 0) {
-                        bullet.dead = true;
+                        enemy.bullets.splice(enemy.bullets.indexOf(bullet), 1);
                     }
                 }
             }

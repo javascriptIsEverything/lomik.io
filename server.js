@@ -26,14 +26,13 @@ let io = socketio(server);
 
 global.castle = {
     side: 50,
-    health: 50,
-    maxHealth: 100,
+    health: 30,
+    maxHealth: 30,
     bodyDamage: 3,
-    w: 50,
-    h: 50,
-    x: 300 - 25,
-    y: 300 - 25,
-}
+    x: 300,
+    y: 300,
+};
+
 io.on('connection', sock => {
     clients[sock.id] = sock;
     players[sock.id] = new Tank(

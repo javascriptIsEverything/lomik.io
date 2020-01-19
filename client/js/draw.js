@@ -204,8 +204,8 @@ function drawHealth(obj) {
     if (obj.dead) return;
     let x = obj.x,
         y = obj.y,
-        w = obj.w || obj.r*2,
-        h = obj.h || obj.r*2;
+        w = obj.side || obj.r*2,
+        h = obj.side || obj.r*2;
     
     let width, wholeWidth = w+8;
     if (obj.maxHealth != obj.health) {
@@ -234,8 +234,8 @@ function drawCastle() {
     with(ctx) {
         with (castle) {
             beginPath();
-            moveTo(cw/2,ch/2);
-            lineTo(x,y);
+            save();
+            translate(-side/2, -side/2);
             lineTo(x , y - side/2);
             lineTo(x + side/4, y);
             lineTo(x + side*2/4, y - side/2);
@@ -243,17 +243,19 @@ function drawCastle() {
             lineTo(x + side, y - side/2);
             lineTo(x + side ,y);
             lineTo(x + side ,y + side);
-            lineTo(x ,y + side);
+            lineTo(x, y + side);
             lineTo(x,y);
-            lineTo(x + side,y);
+            // lineTo(x + side,y);
             strokeStyle = "purpule";
+            fillStyle = '#000';
             fill();
-            stroke();
+            // stroke();
             closePath();
+            restore();
         }
     }
     // if (castle.health < castle.maxHealth) {
-        drawHealth(castle);
+        // drawHealth(castle);
     // }
 }
 
@@ -273,8 +275,9 @@ function game () {
         drawHealth(enemies[i]);
         draw(enemies[i]);
     }
+    ctx.fillStyle = '#000';
     ctx.font = "40px serif";
-    ctx.fillText("Array.filter[]", 200, 40);
+    ctx.fillText("[{ Lomik.io }]", 200, 40);
 
     for (let i of cells) {
         if (i.dead) {
