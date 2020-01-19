@@ -6,3 +6,8 @@ attackeri constructori mej defaultX, defaultY jnjel
 giwer cerek ngarel0
 dxyaki gmpaluc game over0 (if (isGameOver) drawGameOver);
 varkyanneri formulan | ~~((end - now) /1000)
+
+//a
+attackeri distanciai stugum0 hanel __ +;
+attackeri constructori mej defaultX, defaultY jnjel __ defaultnery chem jnje bayc el cenrt chi eshta, vred guak __ + ;
+attackerneri dawtic durs haytnel0 __  + ;

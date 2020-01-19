@@ -16,8 +16,8 @@ module.exports = class Geometry {
                 break;
             case 'attacker':
                 this.r = 4;
-                this.x = random(this.r+600/2-50, 600/2+50-this.r);
-                this.y = random(this.r+600/2-50, 600/2+50-this.r);
+                this.x = Math.random(1) < 0.5 ? 600+50 : -50;
+                this.y = Math.random(1) < 0.5 ? 600+50 : -50;
                 this.defaultX = this.x;
                 this.defaultY = this.y;
                 this.maxHealth = 13;
@@ -80,15 +80,16 @@ module.exports = class Geometry {
             ids.push(players[i].id);
         }
         let closest = Math.min(...distances);
-        if (closest > 300) {
-            if (this.x == this.defaultX && this.y == this.defaultY) return;
-            this.angle = -Math.atan2(this.y - this.defaultY, -(this.x - this.defaultX));
-            let vx = Math.cos(this.angle)*1.5;
-            let vy = Math.sin(this.angle)*1.5;
-            this.x += ~~vx;
-            this.y += ~~vy;
-            return;
-        };
+        // if (closest > 300) {
+            if (this.x == this.defaultX && this.y == this.defaultY) {
+                this.angle = -Math.atan2(this.y - this.defaultY, -(this.x - this.defaultX));
+                let vx = Math.cos(this.angle)*1.5;
+                let vy = Math.sin(this.angle)*1.5;
+                this.x += vx;
+                this.y += vy;
+            }
+            // return;
+        // };
         let index = distances.indexOf(closest);
         let player = players[ids[index]];
         if (!player) return;

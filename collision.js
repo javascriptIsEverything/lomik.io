@@ -1,3 +1,5 @@
+let gameover = false;
+
 function RectCircleColliding(circle, rect) {
     let distX = Math.abs(circle.x - rect.x-rect.r);
     let distY = Math.abs(circle.y - rect.y-rect.r);
@@ -190,13 +192,11 @@ module.exports = {
     castleCollision () {
         for (let i = 0, len = enemies.length; i < len; i++) {
             let enemy = enemies[i];
-            
-            // if (RectCircleColliding(enemy, castle))  {
+            // if (RectCircleColliding(enemy, castle))  {aw
             if (enemy.x + enemy.r > castle.x - castle.side/2
                 && enemy.x - enemy.r < castle.x + castle.side/2
                 && enemy.y + enemy.r > castle.y - castle.side/2
-                && enemy.y - enemy.r < castle.y + castle.side/2)
-            {
+                && enemy.y - enemy.r < castle.y + castle.side/2){
                 castle.health -= enemy.bodyDamage;
                 if (castle.health <= 0)
                     castle.dead = true;

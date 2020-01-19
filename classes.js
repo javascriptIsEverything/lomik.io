@@ -19,7 +19,7 @@ module.exports = function (type = 'default', obj) {
             ].map(i => {i.r = r; return i});
             break;
         case 'machineGun':
-            this.reloadDelay -= 250;
+            this.reloadDelay -= 100;
             this.spread = [-.6, .6];
             this.guns = [{
                 x: 0,
