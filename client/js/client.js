@@ -127,6 +127,7 @@ sock.on('update', function (obj) {
             paused = false;
             requestAnimationFrame(game);
         });
+        window.addEventListener('beforeunload', () => sock.emit('disconnect'));
     };
 
     setTimeout(initServerTimeoutlId, 200);

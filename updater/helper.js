@@ -90,7 +90,7 @@ function updateLevel(player) {
     } else player.availableClasses = [];
 }
 
-function regen(obj, now) {
+function regen(obj) {
     if (obj.lastDamaged + obj.regeneration.delay < now) {
         obj.health += obj.regeneration.speed;
         if (obj.health > obj.maxHealth) {

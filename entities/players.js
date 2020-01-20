@@ -9,7 +9,7 @@ module.exports = function () {
             updateLevel(player);
     
         if (player.health < player.maxHealth) {
-            regen(player, now);
+            regen(player);
         }
     
         if (player.buttons.c === true)

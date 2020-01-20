@@ -12,7 +12,7 @@ module.exports = function () {
             i.attack();
         }
         if (i.health < i.maxHealth) {
-            regen(i, now);
+            regen(i);
         }
         i.recalculate();
     }

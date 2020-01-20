@@ -264,6 +264,8 @@ let paused = false;
 function game () {
     if (paused) return;
     scene.clear();
+    ctx.fillStyle = `rgba(33, 33, 33, ${opacity})`;
+    ctx.fillRect(0, 0, cw, ch);
     drawHealth(castle);
     drawCastle();
     for (let i in players) {

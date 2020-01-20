@@ -81,13 +81,13 @@ module.exports = class Geometry {
         }
         let closest = Math.min(...distances);
         // if (closest > 300) {
-            if (this.x == this.defaultX && this.y == this.defaultY) {
-                this.angle = -Math.atan2(this.y - this.defaultY, -(this.x - this.defaultX));
-                let vx = Math.cos(this.angle)*1.5;
-                let vy = Math.sin(this.angle)*1.5;
-                this.x += vx;
-                this.y += vy;
-            }
+            // if (this.x == this.defaultX && this.y == this.defaultY) {
+            //     this.angle = -Math.atan2(this.y - this.defaultY, -(this.x - this.defaultX));
+            //     let vx = Math.cos(this.angle)*1.5;
+            //     let vy = Math.sin(this.angle)*1.5;
+            //     this.x += vx;
+            //     this.y += vy;
+            // }
             // return;
         // };
         let index = distances.indexOf(closest);

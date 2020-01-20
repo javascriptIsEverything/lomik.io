@@ -4,37 +4,16 @@ let app = express();
 let server = require('http').createServer(app);
 let socketio = require('socket.io');
 require('./updater');
+require('./globals');
 
 // global reusable variables and functions
-global.random = (min, max) => ~~(Math.random() * (max - min) + min);
-global.now = 0;
-global.isNight = false;
-let clients = {};
-global.players = {};
-global.cells = [];
-global.enemies = [];
 let intervalId = null;
-global.playersLength = 0;
-// send objects to classes
-global.Geometry = require('./geometry');
-global.collision = require('./collision');
-global.Tank = require('./tank');
-global.classes = require('./classes');
+let nightInterval = null;
 
 let entities = require('./entities');
 let io = socketio(server);
 
-global.castle = {
-    side: 50,
-    health: 30,
-    maxHealth: 30,
-    bodyDamage: 3,
-    x: 300,
-    y: 300,
-};
-
 io.on('connection', sock => {
-    clients[sock.id] = sock;
     players[sock.id] = new Tank(
         ~~(Math.random() * 580 + 10),
         ~~(Math.random() * 580 + 10),
@@ -44,40 +23,48 @@ io.on('connection', sock => {
 
     // if the first player joined, run loop
     if (playersLength === 1) {
-        enemies.map(i => i.color = 'purple');
         cells = [];
         for (let i = 0; i < 20; i++) {
             cells.push(Geometry.prototype.createCell());
         }
-        let t = 0;
-        // setInterval(() => {
-        //     isNight = !isNight;
-        //     if (enemies.length > 3) return;
-        //     for (let i = 0; i < 1; i++) {
-        //         enemies.push(new Tank(
-        //             ~~(Math.random() * 580 + 10),
-        //             ~~(Math.random() * 580 + 10),
-        //             i // id
-        //         ));
-        //     }
-        // }, 30000);
-        enemies.push(new Enemy());
+        nightInterval = setInterval(() => {
+            isNight = !isNight;
+            if (!isNight) return; 
+            if (enemies.length > 5) return;
+            for (let i = 0; i < playersLength; i++) {
+                enemies.push(new Enemy());
+            }
+            for (let i = 0; i < playersLength*3; i++) {
+                cells.push(Geometry.prototype.createCell('attacker'));
+            }
+        }, 15e3);
+        // enemies.push(new Enemy());
+        let opacity = 0;
         intervalId = setInterval(() => {
             now = Date.now();
             // gets lightweight variant of players object, so you can update it easier
             let updatedPlayers;
-            try {
+            try { // navsyaki, or awibka tta serv0
                 updatedPlayers = entities.checkPlayers();
                 // enemies
-                entities.checkEnemies(t);
+                entities.checkEnemies();
                 entities.checkCells();
                 collision.castleCollision();
+                regen(castle);
+
+                if (!isNight) opacity -= .6 / 5 / 60;
+                else opacity += .6 / 5 / 60;
+                if (opacity > .6) opacity = .6;
+                else if (opacity < 0) opacity = 0;
+
                 io.emit('update', {objects: {
                     players: updatedPlayers,
-                    cells, enemies, isNight, castle,
+                    cells, enemies, isNight, castle, opacity
                 }});
             }
-            catch (err) {}
+            catch (err) {
+                console.log(err);
+            }
         }, 1000/60);
     }
     // console.log(`${sock.id} connected!`);
@@ -85,11 +72,11 @@ io.on('connection', sock => {
     sock.on('disconnect', function () {
         // console.log(`${sock.id} disconnect!`);
     
-        delete clients[sock.id];
         delete players[sock.id];
         playersLength--;
         if (playersLength === 0) {
             clearInterval(intervalId);
+            clearInterval(nightInterval);
             cells = [];
             enemies = [];
         }
@@ -186,5 +173,4 @@ io.on('connection', sock => {
 app.use(express.static(__dirname+'/client'));
 server.listen(8080, () => {
     console.log('Lomik.io running at 8080.');
-    console.log('sarkel dxyaki kyanqer0. Collision fayli mej sarkel taza stugox fukncia, vor0 kancni twnamineri patronneri vrayov. Hin funkciain cer ttal9');
 });

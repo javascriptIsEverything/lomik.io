@@ -16,6 +16,7 @@ function RectCircleColliding(circle, rect) {
 }
 
 function CircularCollision(circle1, circle2) {
+    if (!circle1 || !circle2) return;
     return ((circle1.x - circle2.x)**2 + (circle1.y - circle2.y)**2)**.5 < circle1.r + circle2.r;
     // let dx = circle1.x - circle2.x;
     // let dy = circle1.y - circle2.y;
@@ -62,12 +63,14 @@ global.updateScore = function (obj, cellType) {
 
 module.exports = {
     bulletCollision (obj, cells) {
+        if (!obj) return;
         for (let i = 0, len = obj.bullets.length; i < len; i++) {
             let bullet = obj.bullets[i];
             // for (let j = 0, len = cells.length;  j < len; j++) {
             for (let j in cells) {
                 let cell = cells[j];
-                if (cell.dead) return;
+                if (!cell) continue;
+                if (cell.dead) continue;
                 if (CircularCollision(bullet, cell)) {
                     bullet.health -= cell.bodyDamage + obj.penetration;
                     if (bullet.health <= 0) {
@@ -104,9 +107,11 @@ module.exports = {
                     cell.y += cell.vy;
                 }
             }
-            for (let j in enemies) {
+            for (let j = 0, len = enemies.length; j < len; j++) {
+                // neee. spese lengthi xndir kunenam... Amen merneluc bdi len-- enes
                 let enemy = enemies[j];
-                if (enemy.dead) return;
+                if (!enemy) continue;
+                // if (enemy.dead) return;
                 if (CircularCollision(bullet, enemy)) {
                     bullet.health -= enemy.bodyDamage + obj.penetration;
                     if (bullet.health <= 0) {
@@ -114,14 +119,15 @@ module.exports = {
                     }
                     enemy.health -= obj.bulletDamage;
                     if (enemy.health <= 0) {
-                        enemies.splice(enemies.indexOf(enemy), 1);
-                        if (enemies.length) {
+                        enemies.splice(j, 1);
+                        len--;
+                        // if (enemies.length) {
                         //     setTimeout(() => {
                         //         cells.push(Geometry.prototype.createCell());
                         //     }, 3000);
                             updateScore(obj, 'enemy');
                             return;
-                        }
+                        // }
                     }
                     else enemy.lastDamaged = now;
                     let vx, vy;
@@ -149,7 +155,8 @@ module.exports = {
         // for (let i = 0, len = cells.length;  i < len; i++) {
         for (let i in cells) {
             let cell = cells[i];
-            if (cell.dead) return;
+            if (!cell) continue;
+            if (cell.dead) continue;
             if (CircularCollision(obj, cell))  {
                 obj.health -= cell.bodyDamage;
                 if (obj.health <= 0)
@@ -188,10 +195,53 @@ module.exports = {
                 obj.y -= cell.vy*1.2;
             }
         }
+        // for (let j = 0, len = enemies.length; j < len; j++) {
+        // //     // neee. spese lengthi xndir kunenam... Amen merneluc bdi len-- enes
+        //     let enemy = enemies[j];
+        //     if (!enemy) continue;
+        // //     // if (enemy.dead) return;
+        //     if (CircularCollision(obj, enemy))  {
+        //         obj.health -= enemy.bodyDamage;
+        //         if (obj.health <= 0)
+        //             obj.dead = true;
+        //         else obj.lastDamaged = now;
+        //         enemy.health -= obj.bodyDamage;
+        //         if (enemy.health <= 0) {
+        //             console.log(enemy.health)
+        //             enemies.splice(j, 1);
+        //             len--;
+        // //             // if (enemies.length) {
+        // //             //     setTimeout(() => {
+        // //             //         cells.push(Geometry.prototype.createCell());
+        // //             //     }, 3000);
+        //                 updateScore(obj, 'enemy');
+        //                 return;
+        // //             // }
+        //         }
+        // //         let vx, vy;
+        // //         if (obj.moveButtons.left === true) {
+        // //             vx = -1;
+        // //         }
+        // //         else if (obj.moveButtons.right === true) {
+        // //             vx = 1;
+        // //         }
+        // //         if (obj.moveButtons.up === true) {
+        // //             vy = -1;
+        // //         }
+        // //         else if (obj.moveButtons.down === true) {
+        // //             vy = 1;
+        // //         }
+        // //         enemy.vx = 2 * vx|0;
+        // //         enemy.vy = 2 * vy|0;
+        // //         enemy.x += enemy.vx;
+        // //         enemy.y += enemy.vy;
+        //     }
+        // }
     },
     castleCollision () {
         for (let i = 0, len = enemies.length; i < len; i++) {
             let enemy = enemies[i];
+            if (!enemy) continue;
             // if (RectCircleColliding(enemy, castle))  {aw
             if (enemy.x + enemy.r > castle.x - castle.side/2
                 && enemy.x - enemy.r < castle.x + castle.side/2
@@ -209,6 +259,7 @@ module.exports = {
             }
             for (let j = 0, len = enemy.bullets.length; j < len; j++) {
                 let bullet = enemy.bullets[j];
+                if (!bullet) continue;
                 
             // if (RectCircleColliding(bullet, castle))  {
                 if (bullet.x + bullet.r > castle.x - castle.side/2

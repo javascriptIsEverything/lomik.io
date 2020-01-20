@@ -85,34 +85,40 @@ global.Enemy = class extends Tank {
 module.exports = function (t) {
     if (!enemies.length) return;
     for (let j = 0; j < enemies.length; j++) {
+        let enemy = enemies[j];
+        if (!enemy) return;
         // if (isNight) {            
-            enemies[j].attack();
-            collision.bulletCollision(enemies[j], players);
-            collision.bodyCollision(enemies[j], players);
+            Enemy.prototype.attack.call(enemy);
+            // ? fix ↑
+            collision.bulletCollision(enemy, players);
+            collision.bodyCollision(enemy, players);
+            if (enemy.health < enemy.maxHealth) {
+                regen(enemy);
+            }
         // }
-        if (enemies[j].lastShootTime + enemies[j].reloadDelay < now) {
-            enemies[j].shoot();
-            // for (let n = 0, len = enemies[j].guns.length; n < len; n++) {
-            //     let i = enemies[j].guns;
-            //     let angle = enemies[j].angle + i.angle;
-            //     let speedX = Math.cos(angle) * enemies[j].bulletSpeed + Math.random() - .5;
-            //     let speedY = Math.sin(angle) * enemies[j].bulletSpeed + Math.random() - .5;
-            //     enemies[j].bullets.push({
-            //         lifeEnd: now + enemies[j].bulletLifeTime,
-            //         health: enemies[j].penetration,
+        if (enemy.lastShootTime + enemy.reloadDelay < now) {
+            enemy.shoot();
+            // for (let n = 0, len = enemy.guns.length; n < len; n++) {
+            //     let i = enemy.guns;
+            //     let angle = enemy.angle + i.angle;
+            //     let speedX = Math.cos(angle) * enemy.bulletSpeed + Math.random() - .5;
+            //     let speedY = Math.sin(angle) * enemy.bulletSpeed + Math.random() - .5;
+            //     enemy.bullets.push({
+            //         lifeEnd: now + enemy.bulletLifeTime,
+            //         health: enemy.penetration,
             //         speedX: +speedX.toFixed(2),
             //         speedY: +speedY.toFixed(2),
-            //         x: +(enemies[j].x + i.x + speedX*3).toFixed(2),
-            //         y: +(enemies[j].y + i.y + speedY*3).toFixed(2)
+            //         x: +(enemy.x + i.x + speedX*3).toFixed(2),
+            //         y: +(enemy.y + i.y + speedY*3).toFixed(2)
             //     });
             // }
-            enemies[j].lastShootTime = now;
+            enemy.lastShootTime = now;
         }
-        if (enemies[j].bullets.length) {
-            for (let n = 0, len = enemies[j].bullets.length; n < len; n++) {
-                let bullet = enemies[j].bullets[n];
+        if (enemy.bullets.length) {
+            for (let n = 0, len = enemy.bullets.length; n < len; n++) {
+                let bullet = enemy.bullets[n];
                 if (bullet.aliveUntil < now) {
-                    enemies[j].bullets.splice(n, 1);
+                    enemy.bullets.splice(n, 1);
                     len--;
                     continue;
                 }
