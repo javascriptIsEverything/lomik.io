@@ -261,6 +261,16 @@ function drawCastle() {
 
 let paused = false;
 
+
+function gameOver() {
+    ctx.beginPath();
+    ctx.fillStyle = 'tomato';
+    ctx.font = "80px Arial";
+    ctx.fillText("Game Over", cw/2 - cw/3 , ch/2);
+    ctx.font = "70px Arial";
+    ctx.fillText("You are top FILTER", cw/2 - cw/2 , ch/2+90);
+}
+
 function game () {
     if (paused) return;
     scene.clear();
@@ -299,7 +309,10 @@ function game () {
     if (mousedown && player.canShoot
         || player.buttons.e && player.canShoot
     ) shoot(player);
-
+    if (castle.dead) {
+        gameOver();
+        cleraAnimationFrame();
+    }
     Tank.prototype.drawUpgrades(player);
     Tank.prototype.drawScoreAndUpdates(player);
     scene.drawMiniMap(player.x, player.y);
