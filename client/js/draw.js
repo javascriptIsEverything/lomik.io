@@ -3,7 +3,8 @@ const canvas = document.getElementById`canvas`,
     now = () => Date.now();
 let cw, ch;
 let random = (min, max) => ~~(Math.random() * (max - min) + min);
-
+let second_1 = Date.now(),
+    second_2 = Date.now();
 canvas.focus();
 
 function collision(x1, y1, w1, h1, x2, y2, w2, h2) {
@@ -269,6 +270,8 @@ function gameOver() {
     ctx.fillText("Game Over", cw/2 - cw/3 , ch/2);
     ctx.font = "70px Arial";
     ctx.fillText("You are top FILTER", cw/2 - cw/2 , ch/2+90);
+    ctx.font = "50px Arial";
+    ctx.fillText(`Your record ${(second_2 - second_1)/1000} seconds`, cw/2 - cw/2 , ch/2 +180);
 }
 
 function game () {
@@ -300,7 +303,7 @@ function game () {
         Geometry.prototype.draw(i);
     }
     
-    if (isNight) {
+    if (isNight) { //night
         ctx.fillStyle = 'rgba(33, 33, 33, .7)';
         ctx.fillRect(0, 0, 600, 600);
     }
@@ -309,7 +312,9 @@ function game () {
     if (mousedown && player.canShoot
         || player.buttons.e && player.canShoot
     ) shoot(player);
-    if (castle.dead) {
+
+    if (castle.dead) { // Game over
+        second_2 = Date.now();        
         gameOver();
         cleraAnimationFrame();
     }
