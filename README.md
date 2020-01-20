@@ -18,3 +18,8 @@ collisioni mej twnamu hed bodydamag0 ii awadi
 xaxcoxi merneluc levli 1/2 ov haytnvel0
 dxyaki gmpaluc game over0 (if (isGameOver) drawGameOver); // xaxi verj
 varkyanneri formulan | ~~((end - now) /1000) // rekord hawvel0
+
+//a 
+game overy + ;
+recordy +;lo(bayc tetevm bager kan )
+
