@@ -239,6 +239,7 @@ module.exports = {
         // }
     },
     castleCollision () {
+        if (castle.dead) return;
         for (let i = 0, len = enemies.length; i < len; i++) {
             let enemy = enemies[i];
             if (!enemy) continue;
@@ -248,8 +249,10 @@ module.exports = {
                 && enemy.y + enemy.r > castle.y - castle.side/2
                 && enemy.y - enemy.r < castle.y + castle.side/2){
                 castle.health -= enemy.bodyDamage;
-                if (castle.health <= 0)
+                if (castle.health <= 0) {
                     castle.dead = true;
+                    castle.lastedUntill = now;
+                }
                 else castle.lastDamaged = now;
                 enemy.health -= castle.bodyDamage;
                 if (enemy.health <= 0) {

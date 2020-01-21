@@ -9,9 +9,41 @@ require('./globals');
 // global reusable variables and functions
 let intervalId = null;
 let nightInterval = null;
+let isGameOver = false;
 
 let entities = require('./entities');
 let io = socketio(server);
+let reset = () => {
+    castle = new Castle();
+    isGameOver = false;
+    for (let i in players) {
+        if (!players[i]) return;
+        clients[i] = false;
+        players[i] = new Tank(
+            ~~(Math.random() * 580 + 10),
+            ~~(Math.random() * 580 + 10),
+            i
+        );
+    }
+    cells = [];
+    enemies = [];
+    for (let i = 0; i < 20; i++) {
+        cells.push(Geometry.prototype.createCell());
+    }
+    nightInterval = setInterval(() => {
+        isNight = !isNight;
+        if (!isNight) return; 
+        if (enemies.length > 5) return;
+        for (let i = 0; i < playersLength; i++) {
+            enemies.push(new Enemy());
+        }
+        for (let i = 0; i < playersLength*3; i++) {
+            cells.push(Geometry.prototype.createCell('attacker'));
+        }
+    }, 10e3);
+    castle.aliveFrom = Date.now();
+    castle.dead = false;
+};
 
 io.on('connection', sock => {
     players[sock.id] = new Tank(
@@ -19,30 +51,24 @@ io.on('connection', sock => {
         ~~(Math.random() * 580 + 10),
         sock.id
     );
+    clients[sock.id] = false;
     playersLength++;
 
     // if the first player joined, run loop
     if (playersLength === 1) {
-        cells = [];
-        for (let i = 0; i < 20; i++) {
-            cells.push(Geometry.prototype.createCell());
-        }
-        nightInterval = setInterval(() => {
-            isNight = !isNight;
-            if (!isNight) return; 
-            if (enemies.length > 5) return;
-            for (let i = 0; i < playersLength; i++) {
-                enemies.push(new Enemy());
-            }
-            for (let i = 0; i < playersLength*3; i++) {
-                cells.push(Geometry.prototype.createCell('attacker'));
-            }
-        }, 15e3);
+        reset();
         // enemies.push(new Enemy());
         let opacity = 0;
+        let newGameIn = 0;
         intervalId = setInterval(() => {
             now = Date.now();
-            // gets lightweight variant of players object, so you can update it easier
+            if (isGameOver) {
+                io.emit('update', {objects: {
+                    seconds: ~~((newGameIn - now)/1000)
+                }});
+                return;
+            };
+            // gets lightweight variant of players object, so you can update it faster
             let updatedPlayers;
             try { // navsyaki, or awibka tta serv0
                 updatedPlayers = entities.checkPlayers();
@@ -50,6 +76,14 @@ io.on('connection', sock => {
                 entities.checkEnemies();
                 entities.checkCells();
                 collision.castleCollision();
+                if (castle.health <= 0) {
+                    castle.lastedUntill = now;
+                    newGameIn = now+1e4;
+                    // clearInterval(intervalId);
+                    clearInterval(nightInterval);
+                    isGameOver = true;
+                    setTimeout(reset, 1e4);
+                }
                 regen(castle);
 
                 if (!isNight) opacity -= .6 / 5 / 60;
@@ -72,6 +106,7 @@ io.on('connection', sock => {
     sock.on('disconnect', function () {
         // console.log(`${sock.id} disconnect!`);
     
+        delete clients[sock.id];
         delete players[sock.id];
         playersLength--;
         if (playersLength === 0) {

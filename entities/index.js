@@ -1,7 +1,7 @@
 let checkEnemies = require('./enemies');
 let checkPlayers = require('./players');
 let checkCells = require('./cells');
-global.castle = require('./castle');
+global.Castle = require('./castle');
 
 module.exports = {
     checkEnemies,

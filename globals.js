@@ -2,6 +2,7 @@ global.random = (min, max) => ~~(Math.random() * (max - min) + min);
 global.now = 0;
 global.isNight = false;
 global.players = {};
+global.clients = [];
 global.cells = [];
 global.enemies = [];
 global.playersLength = 0;

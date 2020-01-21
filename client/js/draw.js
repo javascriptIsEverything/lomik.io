@@ -262,16 +262,17 @@ function drawCastle() {
 
 let paused = false;
 
-
 function gameOver() {
     ctx.beginPath();
     ctx.fillStyle = 'tomato';
     ctx.font = "80px Arial";
     ctx.fillText("Game Over", cw/2 - cw/3 , ch/2);
-    ctx.font = "70px Arial";
+    ctx.font = "68px Arial";
     ctx.fillText("You are top FILTER", cw/2 - cw/2 , ch/2+90);
     ctx.font = "50px Arial";
-    ctx.fillText(`Your record ${(second_2 - second_1)/1000} seconds`, cw/2 - cw/2 , ch/2 +180);
+    ctx.fillText(`Your record is ${~~((castle.lastedUntill - castle.aliveFrom)/1000)} seconds`, cw/2 - cw/2 , ch/2 +180);
+    ctx.font = '40px Verdana';
+    ctx.fillText(`New game starts in ${seconds} seconds`, cw/2 - cw/2 , ch/2 +230);
 }
 
 function game () {
@@ -302,24 +303,25 @@ function game () {
         drawHealth(i);
         Geometry.prototype.draw(i);
     }
-    
+
     if (isNight) { //night
         ctx.fillStyle = 'rgba(33, 33, 33, .7)';
         ctx.fillRect(0, 0, 600, 600);
     }
     let player = players[sock.id];
     if (!player) return;
-    if (mousedown && player.canShoot
-        || player.buttons.e && player.canShoot
-    ) shoot(player);
-
     if (castle.dead) { // Game over
-        second_2 = Date.now();        
+        // second_2 = Date.now();        
         gameOver();
-        cleraAnimationFrame();
+        // clearAnimationFrame(game);
     }
-    Tank.prototype.drawUpgrades(player);
-    Tank.prototype.drawScoreAndUpdates(player);
+    else {
+        if (mousedown && player.canShoot
+            || player.buttons.e && player.canShoot
+        ) shoot(player);
+        Tank.prototype.drawUpgrades(player);
+        Tank.prototype.drawScoreAndUpdates(player);
+    }
     scene.drawMiniMap(player.x, player.y);
 
     requestAnimationFrame(game);

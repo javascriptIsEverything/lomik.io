@@ -2,6 +2,7 @@ module.exports = function () {
     let updatedPlayers = {};
     for (let i in players) {
         let player = players[i];
+        if (clients[i]) return;
         let level = player.level;
         collision.bulletCollision(player, cells);
         collision.bodyCollision(player, cells);

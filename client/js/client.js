@@ -4,6 +4,7 @@ let mousedown = false;
 let players = {};
 let enemies = [];
 let isNight = false;
+let seconds = 0;
 
 sock.on('updateCells', function (obj) {
     cells = obj;
@@ -127,7 +128,7 @@ sock.on('update', function (obj) {
             paused = false;
             requestAnimationFrame(game);
         });
-        window.addEventListener('beforeunload', () => sock.emit('disconnect'));
+        window.addEventListener('close', () => sock.emit('disconnect'));
     };
 
     setTimeout(initServerTimeoutlId, 200);
