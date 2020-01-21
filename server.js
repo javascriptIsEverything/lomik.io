@@ -30,9 +30,29 @@ let reset = () => {
         isNight = !isNight;
         if (!isNight) return; 
         if (enemies.length > 5) return;
+            
         for (let i = 0; i < playersLength; i++) {
+            let enemyClass;
+            // switch (Math.floor(Math.random()*5)) {
+                //     case 1:
+                //     case 2:
+                //         enemyClass = 'machineGun';
+                //     case 3:
+                //         enemyClass = 'machineGun';
+            //     case 4:
+            //         enemyClass = 'flankguard';
+            //     }
             let enemy = new Enemy();
-            // stex
+            if (Math.random()*10 <= 4) {
+                enemyClass = 'sniper';
+            }else if (Math.random()*10 >= 4 && Math.random()*10 <= 6) {
+                enemyClass = 'flankguard';
+            }else if (Math.random()*10 >= 6 && Math.random()*10 <= 8) {
+                enemyClass = 'twin';
+            }else if (Math.random()*10 >= 8 && Math.random()*10 <= 10) {
+                enemyClass = 'machineGun';
+            }
+            classes.call(enemy, enemyClass ,enemy);
             enemies.push(enemy);
         }
         for (let i = 0; i < playersLength*3; i++) {
