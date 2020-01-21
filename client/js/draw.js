@@ -284,8 +284,15 @@ function game () {
     drawCastle();
     for (let i in players) {
         let player = players[i];
-        drawHealth(player);
-        draw(player);
+        if (player.dead && !castle.dead) {
+            ctx.fillStyle = 'tomato';
+            ctx.font = '40px Verdana';
+            ctx.fillText(`Respawn in ${~~((seconds - now())/1000)} seconds`, cw/2 - cw/2 , ch/2 +230);
+        }
+        else {
+            drawHealth(player);
+            draw(player);
+        }
     }
     for (let i = 0; i < enemies.length; i++) {
         drawHealth(enemies[i]);

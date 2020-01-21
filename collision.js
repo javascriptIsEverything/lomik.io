@@ -195,48 +195,49 @@ module.exports = {
                 obj.y -= cell.vy*1.2;
             }
         }
-        // for (let j = 0, len = enemies.length; j < len; j++) {
-        // //     // neee. spese lengthi xndir kunenam... Amen merneluc bdi len-- enes
-        //     let enemy = enemies[j];
-        //     if (!enemy) continue;
-        // //     // if (enemy.dead) return;
-        //     if (CircularCollision(obj, enemy))  {
-        //         obj.health -= enemy.bodyDamage;
-        //         if (obj.health <= 0)
-        //             obj.dead = true;
-        //         else obj.lastDamaged = now;
-        //         enemy.health -= obj.bodyDamage;
-        //         if (enemy.health <= 0) {
-        //             console.log(enemy.health)
-        //             enemies.splice(j, 1);
-        //             len--;
-        // //             // if (enemies.length) {
-        // //             //     setTimeout(() => {
-        // //             //         cells.push(Geometry.prototype.createCell());
-        // //             //     }, 3000);
-        //                 updateScore(obj, 'enemy');
-        //                 return;
-        // //             // }
-        //         }
-        // //         let vx, vy;
-        // //         if (obj.moveButtons.left === true) {
-        // //             vx = -1;
-        // //         }
-        // //         else if (obj.moveButtons.right === true) {
-        // //             vx = 1;
-        // //         }
-        // //         if (obj.moveButtons.up === true) {
-        // //             vy = -1;
-        // //         }
-        // //         else if (obj.moveButtons.down === true) {
-        // //             vy = 1;
-        // //         }
-        // //         enemy.vx = 2 * vx|0;
-        // //         enemy.vy = 2 * vy|0;
-        // //         enemy.x += enemy.vx;
-        // //         enemy.y += enemy.vy;
-        //     }
-        // }
+        // if the object is an enemy (cuz the checker function is the same for all)
+        if (enemies.includes(obj)) return;
+        for (let j = 0, len = enemies.length; j < len; j++) {
+            // neee. spese lengthi xndir kunenam... Amen merneluc bdi len-- enes
+            let enemy = enemies[j];
+            if (!enemy) continue;
+        //     // if (enemy.dead) return;
+            if (CircularCollision(obj, enemy))  {
+                obj.health -= enemy.bodyDamage;
+                if (obj.health <= 0)
+                    obj.dead = true;
+                else obj.lastDamaged = now;
+                enemy.health -= obj.bodyDamage;
+                if (enemy.health <= 0) {
+                    enemies.splice(j, 1);
+                    len--;
+        //             // if (enemies.length) {
+        //             //     setTimeout(() => {
+        //             //         cells.push(Geometry.prototype.createCell());
+        //             //     }, 3000);
+                        updateScore(obj, 'enemy');
+                        return;
+        //             // }
+                }
+                let vx, vy;
+                if (obj.moveButtons.left === true) {
+                    vx = -1;
+                }
+                else if (obj.moveButtons.right === true) {
+                    vx = 1;
+                }
+                if (obj.moveButtons.up === true) {
+                    vy = -1;
+                }
+                else if (obj.moveButtons.down === true) {
+                    vy = 1;
+                }
+                enemy.vx = 2 * vx|0;
+                enemy.vy = 2 * vy|0;
+                enemy.x += enemy.vx;
+                enemy.y += enemy.vy;
+            }
+        }
     },
     castleCollision () {
         if (castle.dead) return;

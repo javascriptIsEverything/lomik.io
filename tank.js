@@ -1,7 +1,7 @@
 module.exports = class Tank {
-    constructor(x, y, id) {
-        this.x = x;
-        this.y = y;
+    constructor(id) {
+        this.x = ~~(Math.random() * 580 + 10);
+        this.y = ~~(Math.random() * 580 + 10);
         this.r = 10;
         this.id = id;
         this.className = 'default';

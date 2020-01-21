@@ -12,7 +12,7 @@ global.Enemy = class extends Tank {
         let distances = [];
         let ids = [];
         for (let i in players) {
-            // players[i];
+            if (players[i].dead) continue;
             let dist = Math.sqrt((this.x-players[i].x)**2 + (this.y-players[i].y)**2);
             distances.push(dist)
             ids.push(players[i].id);
@@ -33,10 +33,9 @@ global.Enemy = class extends Tank {
         return player;
     }
     attack () {
-        let isAtTheSamePlace = false;
-        if (!this.cell)
+        if (!this.cell || this.cell.dead)
             this.cell = this.closestPlayer;
-        if (!this.cell) {
+        if (!this.cell || this.cell.dead) {
             if (this.x > 600/2-100 && this.x < 600/2+100
                 && this.y > 600/2-100 && this.y < 600/2+100)
             {

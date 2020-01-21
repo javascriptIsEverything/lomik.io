@@ -3,6 +3,7 @@ module.exports = function () {
     for (let i in players) {
         let player = players[i];
         if (clients[i]) return;
+        if (!player || player.dead) return;
         let level = player.level;
         collision.bulletCollision(player, cells);
         collision.bodyCollision(player, cells);
@@ -10,7 +11,14 @@ module.exports = function () {
             updateLevel(player);
     
         if (player.health < player.maxHealth) {
-            regen(player);
+            if (player.health > 0)
+                regen(player);
+            else {
+                io.emit('update', {objects: {
+                    seconds: now + 1e4
+                }});
+                setTimeout(() => players[i] = new Tank(i), 1e4);
+            }
         }
     
         if (player.buttons.c === true)

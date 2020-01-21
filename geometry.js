@@ -74,7 +74,7 @@ module.exports = class Geometry {
         let distances = [];
         let ids = [];
         for (let i in players) {
-            // players[i];
+            if (players[i].dead) continue;
             let dist = Math.sqrt((this.x-players[i].x)**2 + (this.y-players[i].y)**2);
             distances.push(dist)
             ids.push(players[i].id);

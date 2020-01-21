@@ -12,18 +12,14 @@ let nightInterval = null;
 let isGameOver = false;
 
 let entities = require('./entities');
-let io = socketio(server);
+global.io = socketio(server);
 let reset = () => {
     castle = new Castle();
     isGameOver = false;
     for (let i in players) {
         if (!players[i]) return;
         clients[i] = false;
-        players[i] = new Tank(
-            ~~(Math.random() * 580 + 10),
-            ~~(Math.random() * 580 + 10),
-            i
-        );
+        players[i] = new Tank(i);
     }
     cells = [];
     enemies = [];
@@ -35,7 +31,9 @@ let reset = () => {
         if (!isNight) return; 
         if (enemies.length > 5) return;
         for (let i = 0; i < playersLength; i++) {
-            enemies.push(new Enemy());
+            let enemy = new Enemy();
+            // stex
+            enemies.push(enemy);
         }
         for (let i = 0; i < playersLength*3; i++) {
             cells.push(Geometry.prototype.createCell('attacker'));
@@ -46,11 +44,7 @@ let reset = () => {
 };
 
 io.on('connection', sock => {
-    players[sock.id] = new Tank(
-        ~~(Math.random() * 580 + 10),
-        ~~(Math.random() * 580 + 10),
-        sock.id
-    );
+    players[sock.id] = new Tank(sock.id);
     clients[sock.id] = false;
     playersLength++;
 
