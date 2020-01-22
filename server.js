@@ -14,6 +14,7 @@ let isGameOver = false;
 let entities = require('./entities');
 global.io = socketio(server);
 let reset = () => {
+    isNight = false;
     castle = new Castle();
     isGameOver = false;
     for (let i in players) {
@@ -33,26 +34,42 @@ let reset = () => {
             
         for (let i = 0; i < playersLength; i++) {
             let enemyClass;
-            // switch (Math.floor(Math.random()*5)) {
-                //     case 1:
-                //     case 2:
-                //         enemyClass = 'machineGun';
-                //     case 3:
-                //         enemyClass = 'machineGun';
-            //     case 4:
-            //         enemyClass = 'flankguard';
-            //     }
-            let enemy = new Enemy();
-            if (Math.random()*10 <= 4) {
-                enemyClass = 'sniper';
-            }else if (Math.random()*10 >= 4 && Math.random()*10 <= 6) {
-                enemyClass = 'flankguard';
-            }else if (Math.random()*10 >= 6 && Math.random()*10 <= 8) {
-                enemyClass = 'twin';
-            }else if (Math.random()*10 >= 8 && Math.random()*10 <= 10) {
-                enemyClass = 'machineGun';
+            switch (random(0, 10)) {
+                case 1:
+                case 2:
+                    enemyClass = 'machineGun';
+                    break;
+                case 3:
+                case 4:
+                    enemyClass = 'machineGun';
+                    break;
+                case 5:
+                case 6:
+                    enemyClass = 'flankguard';
+                    break
+                case 7:
+                case 8:
+                    enemyClass = 'sniper';
+                    break;
+                case 9:
+                    enemyClass = 'quadTank';
+                    break;
+                case 10:
+                    enemyCLass = 'pentashot';
+                    break;
             }
+            let enemy = new Enemy();
+            // if (n <= 4) {
+            //     enemyClass = 'sniper';
+            // }else if (n >= 4 && n <= 6) {
+            //     enemyClass = 'flankguard';
+            // }else if (n >= 6 && n <= 8) {
+            //     enemyClass = 'twin';
+            // }else if (n >= 8 && n <= 10) {
+            //     enemyClass = 'machineGun';
+            // }
             classes.call(enemy, enemyClass ,enemy);
+            enemy.reloadDelay *= 1.5;
             enemies.push(enemy);
         }
         for (let i = 0; i < playersLength*3; i++) {

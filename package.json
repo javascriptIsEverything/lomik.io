@@ -1,0 +1,24 @@
+{
+  "name": "lomik.io",
+  "version": "1.0.0",
+  "description": "Mix of diep.io and other games",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/javascriptIsEverything/lomik.io.git"
+  },
+  "keywords": [
+    "lomik.io",
+    "diep.io"
+  ],
+  "author": "lomists",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/javascriptIsEverything/lomik.io/issues"
+  },
+  "homepage": "https://github.com/javascriptIsEverything/lomik.io#readme"
+}

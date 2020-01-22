@@ -2,21 +2,7 @@ global.Enemy = class extends Tank {
     constructor () {
         super();
         this.className = 'twin';
-        // setInterval(() => {
-        //     switch (Math.floor(Math.random(5))) {
-        //         case 1:
-        //         case 2:
-        //             enemyClass = 'machineGun';
-        //         case 3:
-        //             enemyClass = 'machineGun';
-        //         case 4:
-        //             enemyClass = 'flankguard';
-        //         }
-        // }, 30000);
-        // let enemyClass = '';
-
-        // classes.call(this, enemyClass, this);
-        this.reloadDelay += 1000;
+        this.reloadDelay = 1000; // default
         this.color = 'purple';
         this.x = Math.random() > .5 ? random(-30, 0) : random(600, 630);
         this.y = Math.random() > .5 ? random(-30, 0) : random(600, 630);
